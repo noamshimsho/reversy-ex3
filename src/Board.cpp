@@ -69,3 +69,25 @@ int Board::getRow() const {
 char** Board::getBoard()  {
 	return board;
 }
+
+Board::Board( Board& oldboard) {
+	row = oldboard.getRow();
+	column = oldboard.getColumn();
+	char** old = oldboard.getBoard();
+
+	board = new char* [row];
+	for(int i = 0; i < row; i++) {
+		board[i] = new char[column];
+	}
+
+	for (int i = 0; i < row; i++){
+			for (int j = 0; j < column; j++){
+				board[i][j] = old[i][j];
+
+			}
+			}
+	}
+
+
+
+

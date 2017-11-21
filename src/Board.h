@@ -44,6 +44,8 @@ public:
 	 */
 	char** getBoard();
 
+	Board ( Board & oldboard);
+
 private:
 	int row;
 	int column;

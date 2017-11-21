@@ -6,14 +6,19 @@ Position::Position(int x, int y): row(x), column(y) {}
 
 const int& Position::getColumn() const {
 
-	return column;
+    return column;
 }
 
 const int& Position::getRow() const {
-	return row;
+    return row;
 }
 
 bool Position::operator ==(const Position& other) {
 
-	return ((row == other.getRow()) and (column == other.getColumn()));
+    return ((row == other.getRow()) and (column == other.getColumn()));
 }
+ostream &operator <<(ostream &out, const Position &point) {
+    out << " (" << point.getRow() << ", " << point.getColumn() << ") ";
+    return out;
+}
+

@@ -9,6 +9,7 @@ int main() {
 
 	GameFlow game(8,8);
 	game.Play();
+	cout << "git!!"
 
 
 

@@ -17,12 +17,12 @@ public:
 	 * constructor of GameFlow initialize board and game logic
 	 * @ parm row, column the dimension of the board
 	 */
-	GameFlow(int row, int column);
+	GameFlow(int& row, int& column);
 	/**
 	 * play start the game until it's over
 	 */
 	void play(Player *playerX, Player *player0);
-	void endGame();
+	void endGame() ;
 private:
 	Board board;
 	GameLogic logic;

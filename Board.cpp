@@ -32,7 +32,6 @@ Board::~Board(){
 		delete [] board[i];
 	}
 	delete [] board;
-//	cout << "delete board";
 }
 
 void Board::print() const {
@@ -85,16 +84,18 @@ Board::Board( Board& oldboard) {
 				board[i][j] = old[i][j];
 
 			}
-    }
+			}
 }
-int Board:: score(char player) {
-    int i,j, counter=0;
-    for(i=0; i<this->getRow(); i++) {
-        for (j=0;j<this->getColumn();j++) {
-            if (this->getBoard()[i][j] == player) {
-                counter++;
-            }
-        }
-    }
-    return counter;
+
+int Board::score(char player)  {
+				int total = 0;
+				for (int i = 0; i < this->getRow(); i++) {
+						for (int j = 0; j < this->getColumn(); j++){
+								if (this->getBoard()[i][j] == player) {
+									total ++;
+								}
+							}
+					}
+				return total;
 }
+

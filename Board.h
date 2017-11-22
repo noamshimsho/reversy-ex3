@@ -45,7 +45,8 @@ public:
 	char** getBoard();
 
 	Board ( Board & oldboard);
-    int score (char player);
+
+	int score (char player) ;
 
 private:
 	int row;

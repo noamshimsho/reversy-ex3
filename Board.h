@@ -2,7 +2,7 @@
  * Board.h
  *
  *  Created on: 2 בנוב׳ 2017
- *      Author: Noam shimshoviz 203565429
+ *      Author: Noam shimshoviz 203565429 and sarit zevin, ID: 313242588
  */
 
 #ifndef BOARD_H_
@@ -43,9 +43,14 @@ public:
 	 * @ return the pointer of the board
 	 */
 	char** getBoard();
-
+	/**
+	 * copy constructor of the board
+	 */
 	Board ( Board & oldboard);
-
+	/**
+	 * return the score according to given char
+	 * @param player- the char of the player that we to check his score
+	 */
 	int score (char player) ;
 
 private:

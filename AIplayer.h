@@ -2,7 +2,7 @@
  * AIplayer.h
  *
  *  Created on: 16 בנוב׳ 2017
- *      Author: noam
+ *      Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
  */
 
 #ifndef AIPLAYER_H_
@@ -11,7 +11,15 @@
 
 class AIplayer: public Player {
 public:
+	/**
+	 * construct Player from given char
+	 * @ param name- the char to construct 
+	 */
 	AIplayer(char name);
+	/**
+	 * make the player's turn
+	 * @ param logic- the logic for the turn 
+	 */
 	bool playTurn(GameLogic logic) const;
 };
 

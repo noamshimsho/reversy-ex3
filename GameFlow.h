@@ -2,7 +2,7 @@
  * GameFlow.h
  *
  *  Created on: 7 בנוב׳ 2017
- *      Author: Noam shimshoviz 203565429
+ *      Author: Noam shimshoviz 203565429 and sarit zevin, ID: 313242588
  */
 
 #ifndef GAMEFLOW_H_
@@ -22,6 +22,9 @@ public:
 	 * play start the game until it's over
 	 */
 	void play(Player *playerX, Player *player0);
+	/*
+	 * print the final score and announce the winner
+	 */
 	void endGame() ;
 private:
 	Board board;

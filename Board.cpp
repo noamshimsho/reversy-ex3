@@ -2,7 +2,7 @@
  * Board.cpp
   *
  *  Created on: 2 בנוב׳ 2017
- *      Author: Noam shimshoviz 203565429
+ *      Author: Noam shimshoviz 203565429 and sarit zevin, ID: 313242588
  */
 #include <iostream>
 using namespace std;
@@ -96,6 +96,6 @@ int Board::score(char player)  {
 								}
 							}
 					}
-				return total;
+	return total;
 }
 

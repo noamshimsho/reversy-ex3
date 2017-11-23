@@ -1,8 +1,5 @@
 /*
- * Player.cpp
- *
- *  Created on: 16 בנוב׳ 2017
- *      Author: noam
+ * Noam shimshoviz 203565429 Sarit Zevin 313242588
  */
 
 #include "Player.h"

@@ -1,8 +1,5 @@
 /*
- * PossibleMoves.cpp
-  *
- *  Created on: 2 בנוב׳ 2017
- *      Author: Noam shimshoviz 203565429
+ * Noam shimshoviz 203565429 Sarit Zevin 313242588
  */
 
 #include "GameLogic.h"

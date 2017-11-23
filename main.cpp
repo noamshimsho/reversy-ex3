@@ -1,4 +1,4 @@
-// Noam shimshoviz 203565429
+// Noam shimshoviz 203565429 Sarit Zevin 313242588
 
 
 #include "GameFlow.h"
@@ -8,7 +8,7 @@
 #include <stdlib.h>
 
 int main() {
-
+    // get the size of board from the user.
     int  size;
     bool flag;
 		string s;
@@ -24,8 +24,9 @@ int main() {
 		}
 		} while (flag);
 
-		GameFlow game(size, size);
-    Player *p1 = new HumanPlayer('x') ;
+   // the user choose against which to play. 
+
+
 		string x = "1";
 		string b = "2";
     string choise;
@@ -40,7 +41,10 @@ int main() {
             flag = true;
             cout << "try again" << endl;
         }
-    }
+    } 
+   // build the game with the choosen board and players and start the game.
+    GameFlow game(size, size);
+    Player *p1 = new HumanPlayer('x') ;
     if (choise == x) {
         Player *p2 = new AIplayer('0');
         game.play(p1, p2);

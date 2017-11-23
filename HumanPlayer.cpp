@@ -1,8 +1,5 @@
 /*
- * HumanPlayer.cpp
- *
- *  Created on: 16 בנוב׳ 2017
- *      Author: noam
+ * Noam shimshoviz 203565429 Sarit Zevin 313242588
  */
 
 #include "HumanPlayer.h"
@@ -53,7 +50,7 @@ bool HumanPlayer::playTurn(GameLogic logic) const {
 				} while (flag);
 
 				Position p(row,column);
-				logic.updateBoard(p,player);     // end of turn the main board is update
+				logic.updateBoard(p,player);     // end of turn the main board is update and print
 				logic.getBoard().print();
 				return true;
 			}

@@ -1,8 +1,5 @@
 /*
- * Position.h
- *
- *  Created on: 31 באוק׳ 2017
- *      Author: Noam shimshoviz 203565429
+ *      Author: Noam shimshoviz 203565429 Sarit Zevin 313242588
  */
 
 #ifndef POSITION_H_
@@ -34,6 +31,12 @@ public:
      * @ return the number of row of the position
      */
     const int& getRow() const;
+    /**
+     * operator overloadig of <<
+     * this function print the position to an ostream object
+     * @ parm an ostrem object to write on him and point to be written
+     * @ return the ostream object with the point print on him
+     */
     friend ostream& operator <<(ostream &out, const Position &point);
 };
 

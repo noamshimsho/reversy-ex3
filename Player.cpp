@@ -5,21 +5,21 @@
 #include "Player.h"
 
 
-Player::Player(char p) {
+Player::Player(discSymbol p) {
 	player = p;
-	if(player == 'x') {
-		other = '0';
+	if(player == X) {
+		other = O;
 	}
 	else {
-		other = 'x';
+		other = X;
 	}
 }
 
-char Player::getOther() const {
+discSymbol Player::getOther() const {
 	return other;
 }
 
-char Player::getPlayer() const {
+discSymbol Player::getPlayer() const {
 	return player;
 }
 

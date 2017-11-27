@@ -10,6 +10,16 @@
 #include <iostream>
 using namespace std;
 
+/*
+ * type of disc symbol
+ */
+enum discSymbol{
+	X = 'x',
+	O = '0',
+	S = ' '
+};
+
+
 class Board {
 public:
 	/**
@@ -29,7 +39,7 @@ public:
 	 * update the board with a new tag
 	 * @ parm row, column the position of the new tag, player x/0
 	 */
-	void update(int row, int column, char player);
+	void update(int row, int column, discSymbol player);
 	/**
 	 * @ return the number of columns in the board
 	 */
@@ -42,7 +52,7 @@ public:
 	/**
 	 * @ return the pointer of the board
 	 */
-	char** getBoard();
+	discSymbol** getBoard();
 	/**
 	 * copy constructor of the board
 	 */
@@ -51,12 +61,12 @@ public:
 	 * return the score according to given char
 	 * @param player- the char of the player that we to check his score
 	 */
-	int score (char player) ;
+	int score (discSymbol player) ;
 
 private:
 	int row;
 	int column;
-	char** board;
+	discSymbol** board;
 };
 
 #endif /* BOARD_H_ */

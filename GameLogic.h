@@ -19,24 +19,24 @@ public:
 	 * @ parm player, which player is it's turn
 	 *  @ return vector of possible position to play
 	 */
-	vector<Position> calculateMoves(char player) const;
+	vector<Position> calculateMoves(discSymbol player) const;
 	/**
 	 *  calculate the possible moves of the player on a given board 
 	 * @ parm player, which player is it's turn parm m the given board
 	 *  @ return vector of possible position to play
 	 */
-	vector<Position> calculateMoves(char player, Board& m) const;
+	vector<Position> calculateMoves(discSymbol player, Board& m) const;
 	/**
 	 * repair the main board after a player move
 	 * @ parm p, the position of the new tag, tag is it 'x'/'0'
 	 */
-	void updateBoard (Position p, char player);
+	void updateBoard (Position p, discSymbol player);
 	/**
 	 * repair a given board after a player move
 	 * @ parm p, the position of the new tag, tag is it 'x'/'0', parameter m the given board
 	 */
 
-	void updateBoard (Position p, char player, Board& m);
+	void updateBoard (Position p, discSymbol player, Board& m);
        /**
        * @ return the main board
        */

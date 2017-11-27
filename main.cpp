@@ -44,13 +44,13 @@ int main() {
     } 
    // build the game with the choosen board and players and start the game.
     GameFlow game(size, size);
-    Player *p1 = new HumanPlayer('x') ;
+    Player *p1 = new HumanPlayer(X) ;
     if (choise == x) {
-        Player *p2 = new AIplayer('0');
+        Player *p2 = new AIplayer(O);
         game.play(p1, p2);
         delete p2;
     } else if (choise == b) {
-        Player *p2 = new HumanPlayer('0');
+        Player *p2 = new HumanPlayer(O);
         game.play(p1, p2);
         delete p2;
     }

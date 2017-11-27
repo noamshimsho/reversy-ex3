@@ -13,7 +13,7 @@ public:
      * constructor HumanPlayer calling to the base c'tor of player. 
      * @ parm name, the player tag for the game
      */
-	HumanPlayer(char name);
+	HumanPlayer(discSymbol name);
      /**
      * the HumanPlayer play his turn
      * @ parm logic, the rules of the game

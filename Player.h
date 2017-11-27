@@ -7,22 +7,22 @@
 
 class Player {
 protected:
-	char player;
-	char other;
+	discSymbol player;
+	discSymbol other;
 public:
      /**
      * constructor of a player 
      * @ parm p, the player tag for the game
      */
-	Player(char p);
+	Player(discSymbol p);
     /**
      * @ return the tag of the other player
      */
-	char getOther() const;
+	discSymbol getOther() const;
     /**
      * @ return the tag of the player
      */
-	char getPlayer() const;
+	discSymbol getPlayer() const;
     /**
      * virtual function that play the turn of the player
      */

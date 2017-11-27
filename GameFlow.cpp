@@ -27,8 +27,8 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 		    counter = 0;
 		    fullBoard--;
 		//check the score of both players and print it
-		    int x = this->board.score('x');
-		    int o = this->board.score('0');
+		    int x = this->board.score(X);
+            int o = this->board.score(O);
 		    cout<< " there are: " << x << " x " << endl;
 	       	    cout << " there are: " << o << " 0 " << endl;
 		} else {
@@ -41,8 +41,8 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 			    counter = 0;
 			    fullBoard--;
 		//check the score of both players and print it
-			    int x = this->board.score('x');
-			    int o = this->board.score('0');
+			    int x = this->board.score(X);
+			    int o = this->board.score(O);
 				cout<< " there are: " << x << " x " << endl;
 				cout << " there are: " << o << " 0 " << endl;
 			} else {
@@ -56,8 +56,8 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 
 void GameFlow:: endGame()  {
     this->board.print();
-    int x = this->board.score('x');
-    int o = this->board.score('0');
+    int x = this->board.score(X);
+    int o = this->board.score(O);
 
 	cout<< " the game is over!!! "<< endl;
         cout << " the x player score is: " << x << endl;

@@ -10,20 +10,20 @@ using namespace std;
 
 Board::Board(int r, int c): row(r),column(c) {  // build the board as a array of pointers that each one of them point to another array
 
-	board = new char* [row];
+	board = new discSymbol* [row];
 	for(int i = 0; i < row; i++) {
-		board[i] = new char[column];
+		board[i] = new discSymbol[column];
 	}
 	for (int i = 0; i < row; i++){
 		for (int j = 0; j < column; j++){
-			board[i][j] =' ';
+			board[i][j] =S;
 		}
 	}
 	// build the opening board
-	board [(row / 2) -1][(row / 2) -1] = '0';
-	board [(row / 2)][(row / 2)] = '0';
-	board [(row / 2) -1][(row / 2)] = 'x';
-	board [(row / 2)][(row / 2) -1] = 'x';
+	board [(row / 2) -1][(row / 2) -1] = O;
+	board [(row / 2)][(row / 2)] = O;
+	board [(row / 2) -1][(row / 2)] = X;
+	board [(row / 2)][(row / 2) -1] = X;
 
 
 }
@@ -36,7 +36,7 @@ Board::~Board(){
 
 void Board::print() const {
 	for (int i = 1; i <= row; i++) {
-	        cout << " " << "| " << i  ;
+	        cout << (char)S << "| " << i  ;
 	    }
 	    cout << '|' << endl;
 	    cout << string(34, '-') << endl;
@@ -45,7 +45,7 @@ void Board::print() const {
 	    for (int i = 0; i < row; ++i) {
 	        cout << num <<'|';
 	        for (int j = 0; j < column; ++j) {
-	            cout << board [i][j] << " | ";
+	            cout << (char)board [i][j] << " | ";
 	        }
 	        num++;
 	        cout << endl << string(34, '-')<< endl;
@@ -53,7 +53,7 @@ void Board::print() const {
 
 }
 
-void Board::update(int row, int column, char player) {
+void Board::update(int row, int column, discSymbol player) {
 	board[row][column] = player;
 }
 
@@ -65,18 +65,18 @@ int Board::getRow() const {
 	return row;
 }
 
-char** Board::getBoard()  {
+discSymbol** Board::getBoard()  {
 	return board;
 }
 
 Board::Board( Board& oldboard) {
 	row = oldboard.getRow();
 	column = oldboard.getColumn();
-	char** old = oldboard.getBoard();
+	discSymbol** old = oldboard.getBoard();
 
-	board = new char* [row];
+	board = new discSymbol* [row];
 	for(int i = 0; i < row; i++) {
-		board[i] = new char[column];
+		board[i] = new discSymbol[column];
 	}
 
 	for (int i = 0; i < row; i++){
@@ -87,7 +87,7 @@ Board::Board( Board& oldboard) {
 			}
 }
 
-int Board::score(char player)  {
+int Board::score(discSymbol player)  {
 				int total = 0;
 				for (int i = 0; i < this->getRow(); i++) {
 						for (int j = 0; j < this->getColumn(); j++){

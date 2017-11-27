@@ -15,7 +15,7 @@ public:
 	 * construct Player from given char
 	 * @ param name- the char to construct 
 	 */
-	AIplayer(char name);
+	AIplayer(discSymbol name);
 	/**
 	 * make the player's turn
 	 * @ param logic- the logic for the turn 

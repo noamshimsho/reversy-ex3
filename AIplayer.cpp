@@ -7,8 +7,9 @@
 
 #include "AIplayer.h"
 #include "Player.h"
+#include "Board.h"
 
-AIplayer::AIplayer(char name): Player(name) {}
+AIplayer::AIplayer(discSymbol name): Player(name) {}
 
 bool AIplayer::playTurn(GameLogic logic) const {
 	Position winner(0,0);
@@ -52,7 +53,7 @@ bool AIplayer::playTurn(GameLogic logic) const {
 		logic.updateBoard(winner, player);
 		logic.getBoard().print();
 		//print the move the AI player did
-		cout << endl << " player " << this->getPlayer() << " play: " << winner << endl;
+		cout << endl << " player " << (char)this->getPlayer() << " play: " << winner << endl;
 		return true;
 	}
 	else {

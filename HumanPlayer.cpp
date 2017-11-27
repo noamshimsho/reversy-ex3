@@ -14,13 +14,13 @@
 using namespace std;
 
 
-HumanPlayer::HumanPlayer(char name): Player(name) {}
+HumanPlayer::HumanPlayer(discSymbol name): Player(name) {}
 
 bool HumanPlayer::playTurn(GameLogic logic) const {
 
-	const vector<Position>& moves = logic.calculateMoves(player);  // find the moves of the player
+	const vector<Position>& moves = logic.calculateMoves(this->getPlayer());  // find the moves of the player
 			if (moves.size() != 0) {  // check the player has moves
-				cout << endl<< "player: " << player<<" your possible moves are: ";
+				cout << endl<< "player: " << (char)player<<" your possible moves are: ";
 				for (unsigned int i = 0; i < moves.size(); i++) {
 						cout << moves[i] << " ";
 				}
@@ -57,6 +57,4 @@ bool HumanPlayer::playTurn(GameLogic logic) const {
 			else {
 				return false;
 			}
-
-
 }

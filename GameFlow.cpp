@@ -29,8 +29,8 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 		//check the score of both players and print it
 		    int x = this->board.score(X);
             int o = this->board.score(O);
-		    cout<< " there are: " << x << " x " << endl;
-	       	    cout << " there are: " << o << " 0 " << endl;
+		    cout << " there are: " << x << "  x " << endl;
+			cout << " there are: " << o << "  o " << endl;
 		} else {
 			cout << endl << "player X: "<<" no possible moves for you, the turn pass to your opponent" << endl;
 		    counter++;
@@ -44,9 +44,9 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 			    int x = this->board.score(X);
 			    int o = this->board.score(O);
 				cout<< " there are: " << x << " x " << endl;
-				cout << " there are: " << o << " 0 " << endl;
+				cout << " there are: " << o << " o " << endl;
 			} else {
-			    cout <<endl << "player 0: "<<" no possible moves for you, the turn pass to your opponent" << endl;
+			    cout <<endl << "player o: "<<" no possible moves for you, the turn pass to your opponent" << endl;
 			    counter++;
 			}
 		}
@@ -61,12 +61,12 @@ void GameFlow:: endGame()  {
 
 	cout<< " the game is over!!! "<< endl;
         cout << " the x player score is: " << x << endl;
-	cout << " the 0 player score is: " << o << endl;
+	cout << " the o player score is: " << o << endl;
 	if (x > o) {
 		cout << " the winner is.... x!!! congratulations!!! "<<endl;
 	}
 	else if (o > x) {
-		cout << " the winner is.... 0!!! congratulations!!! "<<endl;
+		cout << " the winner is.... o!!! congratulations!!! "<<endl;
 	}
 	else {
 		cout << " good game it is a draw!!!"<<endl;

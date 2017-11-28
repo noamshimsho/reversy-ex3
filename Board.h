@@ -15,7 +15,7 @@ using namespace std;
  */
 enum discSymbol{
 	X = 'x',
-	O = '0',
+	O = 'o',
 	S = ' '
 };
 

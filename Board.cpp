@@ -35,21 +35,31 @@ Board::~Board(){
 }
 
 void Board::print() const {
-	for (int i = 1; i <= row; i++) {
-	        cout << (char)S << "| " << i  ;
-	    }
-	    cout << '|' << endl;
-	    cout << string(34, '-') << endl;
-
-	    int num = 1;
-	    for (int i = 0; i < row; ++i) {
-	        cout << num <<'|';
-	        for (int j = 0; j < column; ++j) {
-	            cout << (char)board [i][j] << " | ";
-	        }
-	        num++;
-	        cout << endl << string(34, '-')<< endl;
-	    }
+	int i, j;
+	for (i=0; i<row+1;i++) {
+		for (j=0; j<column+1;j++) {
+			//print the numbers
+			if (j==0) {
+				if(i==0) {
+					cout<<"  |";
+				} else {
+					cout<<i<<" |";
+				}
+			} else if (i==0){
+				if(j!=0){
+					cout<< j<<" |";
+				}
+				//print the rest of the board
+			} else {
+				cout<<(char)board[i-1][j-1]<< " |";
+			}
+		}
+		cout<<endl;
+		for(j=0;j<row+1;j++) {
+			cout<<"...";
+		}
+		cout<<endl;
+	}
 
 }
 

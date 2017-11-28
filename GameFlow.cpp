@@ -22,7 +22,7 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 	int fullBoard = ((board.getRow())*(board.getColumn()))-4;
 	//check if either the board is full or there is no possible moves twice
 	while((counter!=2) && (fullBoard!=0)) {
-                //check if there is possible moves for the first player
+		//check if there is possible moves for the first player
 		if(playerX->playTurn(this->logic)){
 		    counter = 0;
 		    fullBoard--;
@@ -32,7 +32,7 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 		    cout << " there are: " << x << "  x " << endl;
 			cout << " there are: " << o << "  o " << endl;
 		} else {
-			cout << endl << "player X: "<<" no possible moves for you, the turn pass to your opponent" << endl;
+			cout << endl << "player x: "<<" no possible moves for you, the turn pass to your opponent" << endl;
 		    counter++;
 		}
 		if(fullBoard!=0){
@@ -40,10 +40,10 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 			if(player0->playTurn(this->logic)){
 			    counter = 0;
 			    fullBoard--;
-		//check the score of both players and print it
+				//check the score of both players and print it
 			    int x = this->board.score(X);
 			    int o = this->board.score(O);
-				cout<< " there are: " << x << " x " << endl;
+				cout << " there are: " << x << " x " << endl;
 				cout << " there are: " << o << " o " << endl;
 			} else {
 			    cout <<endl << "player o: "<<" no possible moves for you, the turn pass to your opponent" << endl;

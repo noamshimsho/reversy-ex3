@@ -16,10 +16,10 @@ using namespace std;
 
 HumanPlayer::HumanPlayer(discSymbol name): Player(name) {}
 
-bool HumanPlayer::playTurn(GameLogic logic) const {
+Position HumanPlayer::playTurn(GameLogic logic) const {
 
 	const vector<Position>& moves = logic.calculateMoves(this->getPlayer());  // find the moves of the player
-			if (moves.size() != 0) {  // check the player has moves
+
 				cout << endl<< "player: " << (char)player<<" your possible moves are: ";
 				for (unsigned int i = 0; i < moves.size(); i++) {
 						cout << moves[i] << " ";
@@ -50,11 +50,6 @@ bool HumanPlayer::playTurn(GameLogic logic) const {
 				} while (flag);
 
 				Position p(row,column);
-				logic.updateBoard(p,player);     // end of turn the main board is update and print
-				logic.getBoard().print();
-				return true;
-			}
-			else {
-				return false;
-			}
+				return p;
+
 }

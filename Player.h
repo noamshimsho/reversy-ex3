@@ -23,10 +23,12 @@ public:
      * @ return the tag of the player
      */
 	discSymbol getPlayer() const;
+
+	bool hasMove(GameLogic logic) const;
     /**
      * virtual function that play the turn of the player
      */
-	virtual bool playTurn(GameLogic logic) const = 0;
+	virtual Position playTurn(GameLogic logic) const = 0;
     /**
      * virtual d'tor of player
      */

@@ -21,33 +21,44 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 	int counter = 0;
 	int fullBoard = ((board.getRow())*(board.getColumn()))-4;
 	//check if either the board is full or there is no possible moves twice
-	while((counter!=2) && (fullBoard!=0)) {
+	while((counter < 2) && (fullBoard!=0)) {
 		//check if there is possible moves for the first player
-		if(playerX->playTurn(this->logic)){
+		if(playerX->hasMove(this->logic)){
 		    counter = 0;
 		    fullBoard--;
+		    Position p = playerX->playTurn(this->logic);
+		    logic.updateBoard(p,playerX->getPlayer());
+		    logic.getBoard().print();
+
 		//check the score of both players and print it
 		    int x = this->board.score(X);
-            int o = this->board.score(O);
+        int o = this->board.score(O);
 		    cout << " there are: " << x << "  x " << endl;
-			cout << " there are: " << o << "  o " << endl;
+				cout << " there are: " << o << "  o " << endl;
+				cout << " player " << (char)playerX->getPlayer() << " play: " << p << endl;
 		} else {
 			cout << endl << "player x: "<<" no possible moves for you, the turn pass to your opponent" << endl;
 		    counter++;
+
 		}
-		if(fullBoard!=0){
+		if(fullBoard!=0 ){
 		//check if there is possible moves for the second player
-			if(player0->playTurn(this->logic)){
+			if(player0->hasMove(this->logic)){
 			    counter = 0;
 			    fullBoard--;
+			    Position p = player0->playTurn(this->logic);
+			    logic.updateBoard(p,player0->getPlayer());
+			    logic.getBoard().print();
 				//check the score of both players and print it
 			    int x = this->board.score(X);
 			    int o = this->board.score(O);
-				cout << " there are: " << x << " x " << endl;
-				cout << " there are: " << o << " o " << endl;
+					cout << " there are: " << x << " x " << endl;
+					cout << " there are: " << o << " o " << endl;
+					cout << " player " << (char)player0->getPlayer() << " play: " << p << endl;
 			} else {
 			    cout <<endl << "player o: "<<" no possible moves for you, the turn pass to your opponent" << endl;
 			    counter++;
+
 			}
 		}
 	}

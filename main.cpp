@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "HumanPlayer.h"
 #include "AIplayer.h"
+#include "RemoteGame.h"
 #include <stdlib.h>
 
 int main() {
@@ -27,33 +28,50 @@ int main() {
    // the user choose against which to play. 
 
 
-		string x = "1";
+		string a = "1";
 		string b = "2";
+		string c = "3";
     string choise;
     flag = true;
     while (flag) {
         cout << "Press 1 if you want to play against AI player, " << endl;
         cout<<"press 2 if you want to play against human player: " << endl;
+        cout<<"press 3 if you want to play remote game: " << endl;
         getline(cin, choise);
         flag = false;
 
-        if((choise != x) && (choise != b)) {
+        if((choise != a) && (choise != b) && (choise != c)) {
             flag = true;
             cout << "try again" << endl;
         }
     } 
    // build the game with the choosen board and players and start the game.
-    GameFlow game(size, size);
-    Player *p1 = new HumanPlayer(X) ;
-    if (choise == x) {
+
+
+    if (choise == a) {
+    		GameFlow game(size, size);
+    		Player *p1 = new HumanPlayer(X) ;
         Player *p2 = new AIplayer(O);
         game.play(p1, p2);
         delete p2;
+        delete p1;
     } else if (choise == b) {
+    		GameFlow game(size, size);
+    		Player *p1 = new HumanPlayer(X) ;
         Player *p2 = new HumanPlayer(O);
         game.play(p1, p2);
         delete p2;
-    }
-    delete p1;
+        delete p1;
+    }	else if (choise == c) {
+    		RemoteGame remote ("127.0.0.1", 8005);
+    		try {
+    			remote.connectToServer();
+    		} catch (const char *msg) {
+    				cout << "failed connect to server. Reason: " << msg << endl;
+    			}
+    		remote.play(size, size);
+
+}
+
     return 0;
 }

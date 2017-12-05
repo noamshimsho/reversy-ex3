@@ -18,7 +18,7 @@ public:
      * the HumanPlayer play his turn
      * @ parm logic, the rules of the game
      */
-	bool playTurn(GameLogic logic) const;
+	Position playTurn(GameLogic logic) const;
 };
 
 #endif /* HUMANPLAYER_H_ */

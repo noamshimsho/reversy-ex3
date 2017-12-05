@@ -1,0 +1,66 @@
+Author: Sarit Zevin <saritzevin@gmail.com>
+Date:   Tue Nov 28 16:08:48 2017 +0200
+
+    make the board prettier
+
+commit 4d8097147e23623129b22719676f5a5379ccc358
+Author: Sarit Zevin <saritzevin@gmail.com>
+Date:   Tue Nov 28 12:42:09 2017 +0200
+
+    change zero into the letter o
+
+commit 69d9238a054c644393e85d8b80d6a76941e47412
+Author: Sarit Zevin <saritzevin@gmail.com>
+Date:   Mon Nov 27 18:52:44 2017 +0200
+
+    change all the char into enum
+
+commit 68cc4a5e8d091079d616216db14d0756fc505e93
+Author: noam shimshoviz <noamshimsho@gmail.com>
+Date:   Sun Nov 26 19:50:03 2017 +0200
+
+    add tests to code
+
+commit 5cdd33e4f35167d8fab742e1f7d420e25dcb52f4
+Author: noam shimshoviz <noamshimsho@gmail.com>
+Date:   Thu Nov 23 13:58:28 2017 +0200
+
+    add comments
+
+commit 5d4a0fcb1c31bc1c7129075e51889dd9025c1e99
+Author: Sarit Zevin <saritzevin@gmail.com>
+Date:   Thu Nov 23 14:02:22 2017 +0200
+
+    coments added
+
+commit ff064048e0fba94f2d0a7f7aeb5d89220616e49e
+Author: noam shimshoviz <noamshimsho@gmail.com>
+Date:   Wed Nov 22 23:01:11 2017 +0200
+
+    little fix
+:
+
+commit b335d6d05f9c4088dcc0a7fb3a65f4a1e9790bbc
+Author: Sarit Zevin <saritzevin@gmail.com>
+Date:   Tue Nov 21 16:28:08 2017 +0200
+
+    update Position with uploading operator <<
+
+commit 2c47340ed29c9458d50b8ec9d350ec699645bbaa
+Author: Sarit Zevin <saritzevin@gmail.com>
+Date:   Tue Nov 21 16:18:19 2017 +0200
+
+    from noam to sarit
+
+commit 5d54d9b4c7ad89d2293e097f4a66b1f13b81193e
+Author: noam shimshoviz <noamshimsho@gmail.com>
+Date:   Tue Nov 21 15:39:55 2017 +0200
+
+    update files
+
+commit fdc6bc8df5dd3a7591e030db0319fdfa57e00266
+Author: noamshimsho <31922425+noamshimsho@users.noreply.github.com>
+Date:   Tue Nov 21 15:43:33 2017 +0200
+
+    Add files via upload
+

@@ -11,11 +11,11 @@
 
 AIplayer::AIplayer(discSymbol name): Player(name) {}
 
-bool AIplayer::playTurn(GameLogic logic) const {
+Position AIplayer::playTurn(GameLogic logic) const {
 	Position winner(0,0);
     int o, p;
-	const vector<Position>& moves = logic.calculateMoves(player);
-	if (moves.size() != 0) { // check if there is possible moves for the player
+	  const vector<Position>& moves = logic.calculateMoves(player);
+	//if (moves.size() != 0) { // check if there is possible moves for the player
 		int max_score = -(logic.getBoard().getRow() * logic.getBoard().getColumn()) - 1;
 		for (vector<Position>::const_iterator it = moves.begin(); it != moves.end(); it++ ) {
 			Board temp (logic.getBoard());                 //create copy of the main board
@@ -50,13 +50,11 @@ bool AIplayer::playTurn(GameLogic logic) const {
 			}
 		}
 		//update the board according to the best choosen move
-		logic.updateBoard(winner, player);
-		logic.getBoard().print();
+		//logic.updateBoard(winner, player);
+		//logic.getBoard().print();
 		//print the move the AI player did
-		cout << endl << " player " << (char)this->getPlayer() << " play: " << winner << endl;
-		return true;
-	}
-	else {
-		return false;
-	}
+		//cout << endl << " player " << (char)this->getPlayer() << " play: " << winner << endl;
+		return winner;
+	//}
+
 }

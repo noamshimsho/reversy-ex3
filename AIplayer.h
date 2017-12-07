@@ -20,7 +20,7 @@ public:
 	 * make the player's turn
 	 * @ param logic- the logic for the turn 
 	 */
-	Position playTurn(GameLogic logic) const;
+	Position playTurn(GameLogic logic, vector<Position> &moves) const;
 };
 
 #endif /* AIPLAYER_H_ */

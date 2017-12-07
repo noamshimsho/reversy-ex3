@@ -11,10 +11,10 @@
 
 AIplayer::AIplayer(discSymbol name): Player(name) {}
 
-Position AIplayer::playTurn(GameLogic logic) const {
+Position AIplayer::playTurn(GameLogic logic, vector<Position> &moves) const {
 	Position winner(0,0);
     int o, p;
-	  const vector<Position>& moves = logic.calculateMoves(player);
+	  //const vector<Position>& moves = logic.calculateMoves(player);
 	//if (moves.size() != 0) { // check if there is possible moves for the player
 		int max_score = -(logic.getBoard().getRow() * logic.getBoard().getColumn()) - 1;
 		for (vector<Position>::const_iterator it = moves.begin(); it != moves.end(); it++ ) {

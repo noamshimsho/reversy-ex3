@@ -17,6 +17,15 @@ bool Position::operator ==(const Position& other) {
 
     return ((row == other.getRow()) and (column == other.getColumn()));
 }
+
+void Position::setRow(int row) {
+	this->row = row;
+}
+
+void Position::setColumn(int column) {
+	this->column = column;
+}
+
 ostream &operator <<(ostream &out, const Position &point) {
     out << " (" << point.getRow() << ", " << point.getColumn() << ") ";
     return out;

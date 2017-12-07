@@ -20,7 +20,7 @@ private:
 	int port;
 	int serverSocket;
 
-	void handleClient(int clinetSocket, int client2Socket);
+	void handleClient(int clinetSocket, int otherSocket);
 
 
 

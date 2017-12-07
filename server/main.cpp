@@ -14,11 +14,24 @@
 #include <netinet/in.h>
 #include <unistd.h>
 #include <string.h>
+#include <fstream>
 
 using namespace std;
 
 int main() {
-	Server server(8005);
+	int port;
+	ifstream inFile;
+	inFile.open("protocol.txt");
+	if (inFile.is_open() == false){
+		cout << "!!!!!!!!!!";
+		exit(1);
+	}
+	inFile >> port;
+	cout << port  << endl;
+	Server server(port);
+	inFile.close();
+
+
 	//server.start();
 
 	try {

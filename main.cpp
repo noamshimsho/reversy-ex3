@@ -7,6 +7,7 @@
 #include "AIplayer.h"
 #include "RemoteGame.h"
 #include <stdlib.h>
+#include <fstream>
 
 int main() {
     // get the size of board from the user.
@@ -17,7 +18,8 @@ int main() {
 		cout << "Please enter even size of board: " << endl ;
 		getline(cin, s);
 		size = atoi(s.c_str());
-		if (size > 0 && size%2 == 0){
+		//if (size > 0 && size%2 == 0){
+		if (size > 0 ){
 			flag = false;
 		} else {
 			cout << "wrong input try again"<<endl;
@@ -63,7 +65,18 @@ int main() {
         delete p2;
         delete p1;
     }	else if (choise == c) {
-    		RemoteGame remote ("127.0.0.1", 8005);
+    		int port;
+    		string IP;
+    		const char* ip;
+    		ifstream inFile;
+    		inFile.open("protocol.txt");
+    		inFile >> IP;
+    		inFile >> port;
+    		inFile.close();
+    		cout << IP.c_str() << " ," << port << endl;
+    		ip = IP.c_str();
+    		//RemoteGame remote (IP.c_str(), port);
+    		RemoteGame remote (ip, port);
     		try {
     			remote.connectToServer();
     		} catch (const char *msg) {

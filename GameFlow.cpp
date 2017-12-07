@@ -23,10 +23,11 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 	//check if either the board is full or there is no possible moves twice
 	while((counter < 2) && (fullBoard!=0)) {
 		//check if there is possible moves for the first player
-		if(playerX->hasMove(this->logic)){
+		vector <Position> moves = playerX->hasMove(logic);
+		if(!moves.empty()){
 		    counter = 0;
 		    fullBoard--;
-		    Position p = playerX->playTurn(this->logic);
+		    Position p = playerX->playTurn(this->logic, moves);
 		    logic.updateBoard(p,playerX->getPlayer());
 		    logic.getBoard().print();
 
@@ -43,10 +44,11 @@ void GameFlow::play(Player *playerX, Player *player0)  {
 		}
 		if(fullBoard!=0 ){
 		//check if there is possible moves for the second player
-			if(player0->hasMove(this->logic)){
+			vector <Position> moves = player0->hasMove(logic);
+			if(!moves.empty()){
 			    counter = 0;
 			    fullBoard--;
-			    Position p = player0->playTurn(this->logic);
+			    Position p = player0->playTurn(this->logic, moves);
 			    logic.updateBoard(p,player0->getPlayer());
 			    logic.getBoard().print();
 				//check the score of both players and print it

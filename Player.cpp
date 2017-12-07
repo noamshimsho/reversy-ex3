@@ -23,12 +23,8 @@ discSymbol Player::getPlayer() const {
 	return player;
 }
 
-bool Player::hasMove(GameLogic logic) const {
+vector<Position> Player::hasMove(GameLogic logic) const {
 	const vector<Position>& moves = logic.calculateMoves(this->getPlayer());
-	if (moves.size() == 0) {
-		return false;
-	} else {
-		return true;
-	}
+	return moves;
 
 }

@@ -16,9 +16,9 @@ using namespace std;
 
 HumanPlayer::HumanPlayer(discSymbol name): Player(name) {}
 
-Position HumanPlayer::playTurn(GameLogic logic) const {
+Position HumanPlayer::playTurn(GameLogic logic, vector<Position> &moves) const {
 
-	const vector<Position>& moves = logic.calculateMoves(this->getPlayer());  // find the moves of the player
+	//const vector<Position>& moves = logic.calculateMoves(this->getPlayer());  // find the moves of the player
 
 				cout << endl<< "player: " << (char)player<<" your possible moves are: ";
 				for (unsigned int i = 0; i < moves.size(); i++) {

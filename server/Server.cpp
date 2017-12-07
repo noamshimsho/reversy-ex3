@@ -38,7 +38,7 @@ void Server::start() {
 
 
 	listen(serverSocket, MAX);
-  //while (true) {
+  while (true) {
 	  struct sockaddr_in clientAddress;
 	  socklen_t clientAddressLen;
 		cout << "wait............."<<endl;
@@ -47,26 +47,27 @@ void Server::start() {
 		if (clientSocket == -1) {
 			throw "error on accept first player";
 		}
-			cout << "connected to server" << endl;
-			cout << "Waiting for other player to join..." << endl;
+			const char* message = "Waiting for other player";
+			write(clientSocket,message,sizeof(message));
+	//		cout << "connected to server" << endl;
+	//	cout << "Waiting for other player to join..." << endl;
 
 			struct sockaddr_in client2Address;
 			socklen_t client2AddressLen;
-			int client2Socket = accept(serverSocket, (struct sockaddr *)&client2Address, &client2AddressLen);
-			if (client2Socket == -1) {
+			int otherSocket = accept(serverSocket, (struct sockaddr *)&client2Address, &client2AddressLen);
+			if (otherSocket == -1) {
 				throw "error on accept second player";
 			}
-			cout << "client 2222222222 connect" << endl;
-			cout << "start play" << endl;
-			this->handleClient(clientSocket, client2Socket);
-
-			close(clientSocket);
-			close(client2Socket);
+			//cout << "client 2222222222 connect" << endl;
+			//cout << "start play" << endl;
+			const char* m = "Welcome to the game!!!!!";
+			write(clientSocket,m,sizeof(m));
+			this->handleClient(clientSocket, otherSocket);
 
 			cout << "close client socket!" << endl;
 			//this->stop();
 
-	//}
+	}
 }
 
 void Server::stop() {
@@ -74,60 +75,51 @@ void Server::stop() {
 	close(serverSocket);
 }
 
-void Server::handleClient(int clinetSocket, int client2Socket) {
+void Server::handleClient(int clientSocket, int otherSocket) {
 
-	cout << "i'm in handleclients!!!!!!";
+
 	int arg1, arg2, n;
-	char buffer [SIZE];
+
 
 		arg1 = 1;
 		arg2 = 2;
-		n = write(clinetSocket, &arg1, sizeof(arg1));
+		n = write(clientSocket, &arg1, sizeof(arg1));
 
 		if (n == -1) {
 			cout << "error write arg1" << endl;
 		}
 
-		n = write(client2Socket, &arg2, sizeof(arg2));
+		n = write(otherSocket, &arg2, sizeof(arg2));
 
 		if (n == -1) {
 			cout << "error write arg2" << endl;
 		}
-		// wait for move of client1
 
-		n = read(clinetSocket,&buffer, sizeof(buffer));
-		for (int i = 0; i < SIZE; i++){
-			cout << buffer[i];
-		} cout << endl;
+bool flag = true;
+int row, column;
+		while(flag) {
+			n = read(clientSocket, &row, sizeof(row));
+			n = read(clientSocket, &column, sizeof(column));
+			if (row == -1) {
+				close(clientSocket);
+				//close(otherSocket);
+				flag = false;
+			} else {
+				n = write(otherSocket, &row, sizeof(row));
+				n = write(otherSocket, &column, sizeof(column));
+			}
 
-		/*
-		n = read(clinetSocket, &arg1, sizeof(arg1));
-		if (n == -1) {
-			cout << "error read arg1" << endl;
-			return;
+			n = read(otherSocket, &row, sizeof(row));
+			n = read(otherSocket, &column, sizeof(column));
+			if (row == -1) {
+				close(otherSocket);
+							//close(otherSocket);
+				flag = false;
+			} else {
+				n = write(clientSocket, &row, sizeof(row));
+				n = write(clientSocket, &column, sizeof(column));
+			}
 		}
-		if (n == 0) {
-			cout << "finish" << endl;
-				return;
-		}
-		n = read(clinetSocket, &op, sizeof(op));
-		if ( n == -1) {
-			cout << "error read op" << endl;
-						return;
-		}
-		n = read(clinetSocket, &arg2, sizeof(arg2));
-		if ( n == -1) {
-			cout << "error read arg2" << endl;
-						return;
-		}
-		cout << "good exercise " << arg1 << op << arg2<< endl;
-
-		// write to the client!!!!!
-		int result = 789;
-*/
-
-
-
 }
 
 

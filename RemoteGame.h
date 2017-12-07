@@ -17,6 +17,12 @@ private:
 	const char*serverIP;
 	int serverPort;
 	int clientSocket;
+	void writeToServer(int x, int y);
+	Position readFromServer();
+	void myTurn(int & counter, int &fullBoard, GameLogic &logic, Player* p1);
+	void otherTurn(int & counter, int &fullBoard, GameLogic &logic, Player* p1);
+	void endGame(Board &board);
+
 };
 
 #endif /* REMOTEGAME_H_ */

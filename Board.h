@@ -45,7 +45,6 @@ public:
 	 */
 	int getColumn() const;
 	/**
-
 	 * @ return the number of the rows in the board
 	 */
 	int getRow() const;

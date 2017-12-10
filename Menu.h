@@ -16,7 +16,7 @@ public:
      */
     void chooseFromMenu();
     /**
-     *
+     * create game according to the choise the player made
      * @param choise is kind of game to play
      * @param size is the size of the board
      */

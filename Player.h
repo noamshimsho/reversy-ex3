@@ -27,6 +27,8 @@ public:
 	vector<Position> hasMove(GameLogic logic) const;
     /**
      * virtual function that play the turn of the player
+     * @param logic, the rules of the game
+     * @param moves- vector of possible moves
      */
 	virtual Position playTurn(GameLogic logic,vector<Position> &moves) const = 0;
     /**

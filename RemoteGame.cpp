@@ -2,7 +2,7 @@
  * RemoteGame.cpp
  *
  *  Created on: 5 בדצמ׳ 2017
- *      Author: noam
+ * Author: Noam shimshoviz 203565429 Sarit Zevin 313242588
  */
 #include "Player.h"
 #include "Position.h"
@@ -22,7 +22,7 @@ using namespace std;
 
 RemoteGame::RemoteGame(const char* serverIP, int serverPort): serverIP(serverIP),
 serverPort(serverPort),clientSocket(0) {
-cout << "client!!" << endl;
+	cout << "client!!" << endl;
 }
 
 void RemoteGame::connectToServer() {
@@ -51,30 +51,55 @@ void RemoteGame::connectToServer() {
 		throw "error connecting to server";
 	}
 	cout << "Connected to server" << endl;
+}
 
-	}
-
-void RemoteGame::play(int row, int column) {
-	int tag, n;
+void RemoteGame::play() {
+	int tag, n, size;
+    string s;
+    bool flag;
 	char buffer[9];
 	int counter = 0;
-	Board board(row, column);
-	int fullBoard = ((board.getRow())*(board.getColumn()))-4;
-	GameLogic logic(board);
 
+	//find out if you are the first player or the second player to connect
 	n = read(clientSocket,&tag,sizeof(tag));
 	if (tag == 1) {
 		cout << "Waiting for other player" << endl;
-	} else if (tag == 2) {
+	} /*else if (tag == 2) {
 		cout << "good luck!!!" << endl;
-	}
+	}*/
 
+	//the first player chose the board's size and send it to the second player
 	n = read(clientSocket,&tag, sizeof(tag));
 	if (n == -1) {
 		throw " error reading";
 	}
 	if (tag == 1) {
-		Player *p1 = new HumanPlayer(X);
+        cout << "You are the first player to connect so you can chose the board's size." << endl;
+        do {
+            cout << "Please enter even size of board: " << endl;
+            getline(cin, s);
+            size = atoi(s.c_str());
+            if (size > 0 && size % 2 == 0) {
+                flag = false;
+            } else {
+                cout << "wrong input try again" << endl;
+                flag = true;
+            }
+        } while (flag);
+        write(clientSocket, &size, sizeof(size));
+    }else if(tag == 2){
+        cout<<"You are the second player to connect."<<endl;
+        read(clientSocket,&size,sizeof(size));
+        cout<<"The chosen board's size is: "<<size<<endl;
+    }
+    //building the board
+    Board board(size, size);
+    int fullBoard = ((board.getRow())*(board.getColumn()))-4;
+    GameLogic logic(board);
+
+    //the first player's game
+    if(tag == 1){
+        Player *p1 = new HumanPlayer(X);
 		board.print();
 		while((counter < 2) && (fullBoard!=0)) {
 			this->myTurn(counter,fullBoard,logic,p1);
@@ -84,7 +109,7 @@ void RemoteGame::play(int row, int column) {
 			}
 		}
 		delete p1;
-
+        //the second player's game
 	} else if (tag == 2) {
 			Player *p1 = new HumanPlayer(O);
 			cout <<endl << "waiting for other player's move..." << endl;
@@ -97,7 +122,7 @@ void RemoteGame::play(int row, int column) {
 			}
 			delete p1;
 	}
-
+    //finish the game
 	this->writeToServer(-1,-1);
 	this->endGame(board);
 }
@@ -116,7 +141,7 @@ Position RemoteGame::readFromServer() {
 void RemoteGame::myTurn(int& counter, int& fullBoard, GameLogic& logic, Player* p1) {
 	Position p(0,0);
 	vector <Position> moves = p1->hasMove(logic);
-	if (!moves.empty()) {
+	if (!moves.empty()) { //means there is moves the player can do
 				counter = 0;
 				fullBoard--;
 				p = p1->playTurn(logic,moves);
@@ -136,10 +161,10 @@ void RemoteGame::myTurn(int& counter, int& fullBoard, GameLogic& logic, Player* 
 void RemoteGame::otherTurn(int& counter, int& fullBoard, GameLogic& logic, Player* p1) {
 
 			Position move = this->readFromServer();
-			if (move == Position (0,0)) {
+			if (move == Position (0,0)) { //means the player other has no move
 				cout << "The other player's has no move" << endl;
 				counter++;
-			} else {
+			} else { //update the board according to the move he read
 				  logic.updateBoard(move,p1->getOther());
 				  logic.getBoard().print();
 				  counter = 0;
@@ -149,6 +174,7 @@ void RemoteGame::otherTurn(int& counter, int& fullBoard, GameLogic& logic, Playe
 
 void RemoteGame:: endGame(Board & board)  {
     board.print();
+    //chech the score of the players
     int x = board.score(X);
     int o = board.score(O);
 

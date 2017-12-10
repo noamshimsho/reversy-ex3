@@ -1,5 +1,5 @@
 //
-// Created by sarit on 05/12/17.
+// Author: Noam shimshoviz 203565429 Sarit Zevin 313242588
 //
 
 #include "Menu.h"
@@ -12,7 +12,6 @@
 #include <fstream>
 
 using namespace std;
-#define difSize 8
 
 Menu::Menu() {}
 
@@ -81,18 +80,9 @@ void Menu::startGame(int choise, int size) {
     	RemoteGame remote (ip, port);
     	try {
     	   remote.connectToServer();
-    	 } catch (const char *msg) {
-    	    cout << "failed connect to server. Reason: " << msg << endl;
-    	    		}
-    	  remote.play(difSize, difSize);
-    	/*
-        RemoteGame remote ("127.0.0.1", 8005);
-        try {
-            remote.connectToServer();
         } catch (const char *msg) {
-            cout << "failed connect to server. Reason: " << msg << endl;
+    	    cout << "failed connect to server. Reason: " << msg << endl;
         }
-        remote.play(difSize, difSize);
-        */
+    	  remote.play();
     }
 }

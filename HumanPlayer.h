@@ -11,12 +11,13 @@ class HumanPlayer: public Player {
 public:
      /**
      * constructor HumanPlayer calling to the base c'tor of player. 
-     * @ parm name, the player tag for the game
+     * @param name, the player tag for the game
      */
 	HumanPlayer(discSymbol name);
      /**
      * the HumanPlayer play his turn
-     * @ parm logic, the rules of the game
+     * @param logic, the rules of the game
+     * @param moves- vector of possible moves
      */
 	Position playTurn(GameLogic logic, vector<Position> &moves) const;
 };

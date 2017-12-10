@@ -27,7 +27,13 @@ public:
 	 * @ return the number of column of the position
 	 */
 	const int& getColumn() const;
+	/*
+	 * set the first cordinate of the position according to a given integer
+	 */
 	void setRow(int row);
+	/*
+	 * set the second cordinate of the position according to a given integer
+	 */
 	void setColumn(int column);
 	/**
 	 * @ return the number of row of the position

@@ -18,7 +18,8 @@ public:
 	AIplayer(discSymbol name);
 	/**
 	 * make the player's turn
-	 * @ param logic- the logic for the turn 
+	 * @ param logic- the logic for the turn
+	 * @param moves- vector of possible moves
 	 */
 	Position playTurn(GameLogic logic, vector<Position> &moves) const;
 };

@@ -35,7 +35,6 @@ public:
 	 * repair a given board after a player move
 	 * @ parm p, the position of the new tag, tag is it 'x'/'0', parameter m the given board
 	 */
-
 	void updateBoard (Position p, discSymbol player, Board& m);
        /**
        * @ return the main board

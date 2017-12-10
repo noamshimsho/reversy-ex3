@@ -1,8 +1,5 @@
 // Noam shimshoviz 203565429 Sarit Zevin 313242588
 
-
-
-
 	#include "Menu.h"
 	#include <stdlib.h>
 	int main() {

@@ -23,7 +23,6 @@ int main() {
 	ifstream inFile;
 	inFile.open("protocol.txt");
 	if (inFile.is_open() == false){
-		cout << "!!!!!!!!!!";
 		exit(1);
 	}
 	inFile >> port;

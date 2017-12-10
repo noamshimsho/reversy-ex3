@@ -56,11 +56,18 @@ void RemoteGame::connectToServer() {
 
 void RemoteGame::play(int row, int column) {
 	int tag, n;
+	char buffer[9];
 	int counter = 0;
 	Board board(row, column);
 	int fullBoard = ((board.getRow())*(board.getColumn()))-4;
 	GameLogic logic(board);
 
+	n = read(clientSocket,&tag,sizeof(tag));
+	if (tag == 1) {
+		cout << "Waiting for other player" << endl;
+	} else if (tag == 2) {
+		cout << "good luck!!!" << endl;
+	}
 
 	n = read(clientSocket,&tag, sizeof(tag));
 	if (n == -1) {
@@ -71,7 +78,7 @@ void RemoteGame::play(int row, int column) {
 		board.print();
 		while((counter < 2) && (fullBoard!=0)) {
 			this->myTurn(counter,fullBoard,logic,p1);
-			cout << "counter!!!!!!!!!!!!!!" << counter <<endl;
+
 			if(fullBoard !=0 && counter != 2) {
 				this->otherTurn(counter,fullBoard,logic,p1);
 			}
@@ -83,14 +90,14 @@ void RemoteGame::play(int row, int column) {
 			cout <<endl << "waiting for other player's move..." << endl;
 			while((counter < 2) && (fullBoard!=0)){
 				this->otherTurn(counter,fullBoard,logic,p1);
-				cout << "counter!!!!!!!!!!!!!!" << counter <<endl;
+
 				if(fullBoard !=0 && counter != 2) {
 					this->myTurn(counter,fullBoard,logic,p1);
 				}
 			}
 			delete p1;
 	}
-	cout << "finish the while loop!!!!";
+
 	this->writeToServer(-1,-1);
 	this->endGame(board);
 }

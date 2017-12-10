@@ -1,5 +1,5 @@
 a.out: compileAll
-	g++ *.o -o server.out
+	g++ *.o -o player.out
 	rm -f *.o
 
 compileAll: *.h *.cpp

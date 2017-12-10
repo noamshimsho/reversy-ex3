@@ -9,6 +9,7 @@
 #include "RemoteGame.h"
 #include <iostream>
 #include <cstdlib>
+#include <fstream>
 
 using namespace std;
 #define difSize 8
@@ -68,6 +69,23 @@ void Menu::startGame(int choise, int size) {
         delete p1;
         //creating remote game
     } else if (choise == 3) {
+    	int port;
+    	string IP;
+    	const char* ip;
+    	ifstream inFile;
+    	inFile.open("protocol.txt");
+    	inFile >> IP;
+    	inFile >> port;
+    	inFile.close();
+    	ip = IP.c_str();
+    	RemoteGame remote (ip, port);
+    	try {
+    	   remote.connectToServer();
+    	 } catch (const char *msg) {
+    	    cout << "failed connect to server. Reason: " << msg << endl;
+    	    		}
+    	  remote.play(difSize, difSize);
+    	/*
         RemoteGame remote ("127.0.0.1", 8005);
         try {
             remote.connectToServer();
@@ -75,5 +93,6 @@ void Menu::startGame(int choise, int size) {
             cout << "failed connect to server. Reason: " << msg << endl;
         }
         remote.play(difSize, difSize);
+        */
     }
 }

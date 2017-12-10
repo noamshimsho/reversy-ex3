@@ -1,5 +1,5 @@
 /*
- *      Author: Noam shimshoviz 203565429 Sarit Zevin 313242588
+ * Author: Noam shimshoviz 203565429 Sarit Zevin 313242588
  */
 #ifndef UNTITLED_MENU_H
 #define UNTITLED_MENU_H

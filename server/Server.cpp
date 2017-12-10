@@ -41,16 +41,18 @@ void Server::start() {
   while (true) {
 	  struct sockaddr_in clientAddress;
 	  socklen_t clientAddressLen;
+
 		cout << "wait............."<<endl;
+
 		int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
 
 		if (clientSocket == -1) {
 			throw "error on accept first player";
 		}
-			const char* message = "Waiting for other player";
-			write(clientSocket,message,sizeof(message));
-	//		cout << "connected to server" << endl;
-	//	cout << "Waiting for other player to join..." << endl;
+
+		int message = 1;
+		write(clientSocket,&message, sizeof(message));
+
 
 			struct sockaddr_in client2Address;
 			socklen_t client2AddressLen;
@@ -58,10 +60,9 @@ void Server::start() {
 			if (otherSocket == -1) {
 				throw "error on accept second player";
 			}
-			//cout << "client 2222222222 connect" << endl;
-			//cout << "start play" << endl;
-			const char* m = "Welcome to the game!!!!!";
-			write(clientSocket,m,sizeof(m));
+
+			message = 2;
+			write(otherSocket, &message, sizeof(message));
 			this->handleClient(clientSocket, otherSocket);
 
 			cout << "close client socket!" << endl;

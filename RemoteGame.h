@@ -57,8 +57,9 @@ private:
     /*
      * this method finish the game of the given board
      * @param board- the board to finish the game from
+     * @param tag- the player's number to announce the winning
      */
-	void endGame(Board &board);
+	void endGame(Board &board, int tag);
 
 };
 

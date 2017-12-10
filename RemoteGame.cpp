@@ -124,7 +124,7 @@ void RemoteGame::play() {
 	}
     //finish the game
 	this->writeToServer(-1,-1);
-	this->endGame(board);
+	this->endGame(board, tag);
 }
 void RemoteGame::writeToServer(int x, int y) {
 	 write(clientSocket,&x, sizeof(x));
@@ -172,7 +172,7 @@ void RemoteGame::otherTurn(int& counter, int& fullBoard, GameLogic& logic, Playe
 			}
 }
 
-void RemoteGame:: endGame(Board & board)  {
+void RemoteGame:: endGame(Board & board, int tag)  {
     board.print();
     //chech the score of the players
     int x = board.score(X);
@@ -182,13 +182,22 @@ void RemoteGame:: endGame(Board & board)  {
         cout << " the x player score is: " << x << endl;
 	cout << " the o player score is: " << o << endl;
 	if (x > o) {
-		cout << " the winner is.... x!!! congratulations!!! "<<endl;
+		cout << " the winner is.... x!!!";
+		if(tag==1) {
+			cout << " congratulations!!! " << endl;
+		} else if(tag ==2){
+			cout<<" too bad..."<<endl;
+		}
 	}
 	else if (o > x) {
-		cout << " the winner is.... o!!! congratulations!!! "<<endl;
+		cout << " the winner is.... o!!!";
+		if(tag==2) {
+			cout << " congratulations!!! " << endl;
+		} else if(tag ==1){
+			cout<<" too bad..."<<endl;
+		}
 	}
 	else {
 		cout << " good game it is a draw!!!"<<endl;
 	}
 }
-

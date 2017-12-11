@@ -64,8 +64,6 @@ void Server::start() {
 			this->handleClient(clientSocket, otherSocket);
 
 			cout << "close client socket!" << endl;
-			//this->stop();
-
 	}
 }
 

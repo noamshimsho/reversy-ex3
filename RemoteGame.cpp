@@ -64,9 +64,7 @@ void RemoteGame::play() {
 	n = read(clientSocket,&tag,sizeof(tag));
 	if (tag == 1) {
 		cout << "Waiting for other player" << endl;
-	} /*else if (tag == 2) {
-		cout << "good luck!!!" << endl;
-	}*/
+	}
 
 	//the first player chose the board's size and send it to the second player
 	n = read(clientSocket,&tag, sizeof(tag));

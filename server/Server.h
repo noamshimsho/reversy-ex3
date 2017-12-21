@@ -8,6 +8,9 @@
 #ifndef SERVER_H_
 #define SERVER_H_
 
+#include <vector>
+#include <string>
+using namespace std;
 class Server {
 public:
     /*
@@ -24,9 +27,13 @@ public:
      */
 	void stop();
 
+	void deleteName (string &name);
+	vector <string> gamesName;
 private:
 	int port;
 	int serverSocket;
+
+
     /*
      * this method read the first player move and write it to the second player and vice versa
      */

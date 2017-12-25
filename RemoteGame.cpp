@@ -51,14 +51,50 @@ void RemoteGame::connectToServer() {
 		throw "error connecting to server";
 	}
 	cout << "Connected to server" << endl;
+
+		 string command = "list_games";
+		 const char * c = command.c_str();
+		 int l = strlen(c);
+		 write(clientSocket, &l, sizeof(l));
+		 write(clientSocket, c, l);
+
+
+
+//int l;
+
+int n;
+n = read(clientSocket,&l,sizeof(l));
+
+
+	char* answer = new char[l + 1];
+	read(clientSocket, answer, l);
+	//for(int i =0; i < l; i++) {
+//cout<< answer[i];
+//}
+	string please (answer);
+	cout <<please <<endl;
+delete answer;
+
 }
 
 void RemoteGame::play() {
 	int tag, n, size;
     string s;
+
+    char* t;
     bool flag;
-	char buffer[9];
+	//char buffer[9];
 	int counter = 0;
+	void * buffer;
+	char array [3];
+
+	n = read(clientSocket,array,2);
+	//s1 = (string *)buffer;
+	array [2] = '\0';
+	string s1 = array;
+	cout << array[0] << array[1];
+	cout << s1 << "!!!!!!!!!!" <<   endl ;
+
 
 	//find out if you are the first player or the second player to connect
 	n = read(clientSocket,&tag,sizeof(tag));

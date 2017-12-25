@@ -14,6 +14,7 @@
 #include <stdio.h>
 #include <pthread.h>
 #include "CommandsManager.h"
+#include <sstream>
 
 
 #define MAX 10
@@ -28,21 +29,45 @@ Server::Server(int port): port(port), serverSocket(0){
 
 struct ThreadArgs {
 	int clientSocket;
-	vector <string> names;
 	CommandsManager manager;
 };
+
 static void * clientHandle (void * tArgs){
 
  struct ThreadArgs *args = (struct ThreadArgs *) tArgs;
  long clientSocket = args-> clientSocket;
- vector <string> names = args->  names;
-
- //read(clientSocket.....
- args->manager.executeCommand("list_games",names);
- cout << "1234" << endl  << clientSocket << endl;
- close(clientSocket);
- pthread_exit(NULL);
+ //CommandsManager man = args->manager;
+ cout << "." << endl;
+ int l;
+ read(clientSocket,&l,sizeof(l));
+ char* answer = new char[l + 1];
+ read(clientSocket, answer, l);
+ string please (answer);
+ delete answer;
+ cout << ".." << endl;
+ string first_word;                    // string to vector (split)
+ istringstream stm(please);
+ vector <string> argv;
+ string word;
+ int flag = 1;
+ while (stm >> word) {
+		if (flag == 1) {
+			first_word = word;
+			flag++;
+		} else {
+		argv.push_back(word);
+		}
+	}
+ cout << "..." << endl;
+	 stringstream ss;          // convert  clientSocket to string and add it to argv
+	 ss << clientSocket;
+	 string client = ss.str();
+	 argv.push_back(client);
+	 cout << "...." <<first_word<<" "<< argv[0]<< endl;
+	 args->manager.executeCommand(first_word,argv);
+   close(clientSocket);
 }
+
 
 
 void Server::stop() {
@@ -65,58 +90,39 @@ void Server::start() {
 	if (bind(serverSocket, (struct sockaddr*)&serverAddres, sizeof(serverAddres)) == -1){
 		throw "error on binding";
 	}
-	ThreadArgs *args = new ThreadArgs;
 	listen(serverSocket, MAX);
-    while (true) {
+
+
+
+
+
+	ThreadArgs *args = new ThreadArgs;
+	CommandsManager m (*this);
+   while (true) {
 	    struct sockaddr_in clientAddress;
 	    socklen_t clientAddressLen;
-	    int x = 9;
-		cout << "wait............."<<endl;
+			cout << "wait............."<<endl;
+			int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
+			if (clientSocket == -1) {
+				throw "error on accept player";
+			}
 
-		int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
 
-		if (clientSocket == -1) {
-			throw "error on accept first player";
-		}
 		pthread_t thread;
-		int rc;
-
-
-		args->names = this->gamesName;
 		args->clientSocket = clientSocket;
-		CommandsManager m (*this);
 		args->manager = m;
+		int rc;
 		rc = pthread_create(&thread, NULL,clientHandle,(void*)args);
 		if (rc) {
 			cout << "bad!!!!";
 		}
-		cout << clientSocket << "!!!!!!!!!!!!!!!!!!!!!!!";
-		void* status;
-		pthread_join(thread, &status);
+		//void* status;
+		//pthread_join(thread, &status);
 
-		cout << "!!!!!!"<< endl;
-
-		/*
-
-		string s = "12";
-		write(clientSocket,s.c_str(),2);
-		int message = 1;
-		write(clientSocket,&message, sizeof(message));
-
-
-
-			struct sockaddr_in client2Address;
-			socklen_t client2AddressLen;
-			int otherSocket = accept(serverSocket, (struct sockaddr *)&client2Address, &client2AddressLen);
-			if (otherSocket == -1) {
-				throw "error on accept second player";
-			}
-
-			message = 2;
-			write(otherSocket, &message, sizeof(message));
-			this->handleClient(clientSocket, otherSocket);
-			cout << "close client socket!" << endl;
-			*/
+		cout << "finish while"<< endl;
+		sleep(2);
+		close(clientSocket);
+		//sleep(10);
 	}
     delete args;
 }
@@ -133,7 +139,6 @@ void Server::deleteName(string& name) {
 		}
 	}
 }
-
 
 
 void Server::handleClient(int clientSocket, int otherSocket) {

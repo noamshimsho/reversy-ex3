@@ -10,6 +10,7 @@
 
 #include <vector>
 #include <string>
+#include "Game.h"
 using namespace std;
 class Server {
 public:
@@ -29,9 +30,15 @@ public:
 
 	void deleteName (string &name);
 	vector <string> gamesName;
+	vector <Game> *getGames();
+	int getServerSocket() const;
+
 private:
 	int port;
 	int serverSocket;
+	//vector <string> gamesName;
+	vector <Game> games;
+
 
 
     /*

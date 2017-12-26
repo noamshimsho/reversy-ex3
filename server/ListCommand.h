@@ -27,8 +27,11 @@ public:
 		args.pop_back();
 
 		string names = "This is the list of games: \n";
-		for (vector<string>::const_iterator it = s.gamesName.begin(); it != s.gamesName.end(); it++){
-			names = names + *it +", ";
+		vector<Game> * g = s.getGames();
+		for (vector<Game>::const_iterator it = g->begin(); it != g->end(); it++){
+			if(it->isWait()){
+				names = names + it->getName() +", ";
+			}
 		}
 		 const char * answer = names.c_str();
 		 int l = strlen(answer);

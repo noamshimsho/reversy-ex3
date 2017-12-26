@@ -7,9 +7,11 @@
 
 #include "CommandsManager.h"
 #include "ListCommand.h"
+#include "StartCommand.h"
 CommandsManager::CommandsManager(){}
 CommandsManager::CommandsManager(Server &s) {
 	commandsMap["list_games"] = new ListCommand(s);
+	commandsMap["start"] = new StartCommand(s);
 }
 void CommandsManager::executeCommand(string command,vector<string> args) {
 	Command *commandObj = commandsMap[command];

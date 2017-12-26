@@ -60,6 +60,16 @@ struct ThreadArgs {
 };
 int main() {
 	m();
+	/*
+	vector<Game> v;
+	int x;
+	for (x = 0; x < 1; x++) {
+		Game y("yes", 3);
+		v.push_back(y);
+		cout << y.getName() << endl;
+	}
+	cout << v.size();
+	*/
 /*
 
 	vector <ThreadArgs> v;

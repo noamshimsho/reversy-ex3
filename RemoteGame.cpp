@@ -51,8 +51,12 @@ void RemoteGame::connectToServer() {
 		throw "error connecting to server";
 	}
 	cout << "Connected to server" << endl;
+	cout << "enter command" << endl;
 
-		 string command = "list_games";
+		 string command;
+		 getline(cin, command);
+		
+		 cout << command << endl;
 		 const char * c = command.c_str();
 		 int l = strlen(c);
 		 write(clientSocket, &l, sizeof(l));

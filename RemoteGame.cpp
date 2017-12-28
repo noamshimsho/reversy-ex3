@@ -17,7 +17,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "RemoteGame.h"
+#include "RemotePlayer.h"
 #include "Position.h"
+#include <sstream>
 using namespace std;
 
 RemoteGame::RemoteGame(const char* serverIP, int serverPort): serverIP(serverIP),
@@ -50,64 +52,106 @@ void RemoteGame::connectToServer() {
 	if (connect(clientSocket, (struct sockaddr *)& serverAddress, sizeof(serverAddress)) == -1) {
 		throw "error connecting to server";
 	}
+	bool flag = true;
 	cout << "Connected to server" << endl;
-	cout << "enter command" << endl;
+	while(flag) {
 
-		 string command;
-		 getline(cin, command);
-		
-		 cout << command << endl;
+	cout << "Your possiible commands are:" << endl;
+	cout << "if you want to see the list of games enter - list_games" << endl;
+	cout << "if you want to start a new game enter - start <name>" << endl;
+	cout << "if you want to join a game enter r - join <name>" << endl;
+
+
+	string command;
+	getline(cin, command);
+
+	istringstream stm(command);
+	string first_word;
+	stm >> first_word;
+
+
+		if (first_word == "start") {
+
 		 const char * c = command.c_str();
 		 int l = strlen(c);
 		 write(clientSocket, &l, sizeof(l));
 		 write(clientSocket, c, l);
+		 int n;
+		 n = read(clientSocket,&l,sizeof(l));
+		 if (n == 0) {
+			 close(clientSocket);
+		 }
+		 char* answer = new char[l];
+		 read(clientSocket, answer, l);
+ answer[l] ='\0';
+		 string please (answer);
+		 delete answer;
+   cout << endl << please << endl;
+		 if (please == "-1") {
+			 cout << "try another name..." << endl;
+		 } else {
+		 cout <<please <<endl;
+		 this->play();
+		 flag = false;
+		  }
+		} else if (first_word == "list_games") {
 
+			 const char * c = command.c_str();
+			 int l = strlen(c);
+			 write(clientSocket, &l, sizeof(l));
+			 write(clientSocket, c, l);
+			 int n;
+			 n = read(clientSocket,&l,sizeof(l));
+			 if (n == 0) {
+				 close(clientSocket);
+			 }
+			 char* answer = new char[l];
+			 read(clientSocket, answer, l);
+   answer[l] ='\0';
+			 string please (answer);
+			 cout <<please <<endl;
+			 delete answer;
 
+		} else if (first_word == "join") {
+			 cout << "in else if remmote command " << command<< " "<<command.size() << endl;
+			 const char * c1 = command.c_str();
+			 int l = strlen(c1);
+			 cout << "in else if size" << l << "  " << strlen(c1)<< endl;
+			 write(clientSocket, &l, sizeof(l));
+			 write(clientSocket, c1, l);
+			 int n;
+			 n = read(clientSocket,&l,sizeof(l));
+			 if (n == 0) {
+				 close(clientSocket);
+			 }
+			 char* answer = new char[l];
+			 read(clientSocket, answer, l);
+    answer[l] ='\0';
+			 string please (answer);
+			 delete answer;
+			 if (please == "-1") {
+			 	cout << "there is no such game..." << endl;
+			 		} else {
+			 			cout << please << endl;
+			 			 this->play();
+			 		}
+		}
 
-//int l;
+	}
 
-int n;
-n = read(clientSocket,&l,sizeof(l));
-
-
-	char* answer = new char[l + 1];
-	read(clientSocket, answer, l);
-	//for(int i =0; i < l; i++) {
-//cout<< answer[i];
-//}
-	string please (answer);
-	cout <<please <<endl;
-delete answer;
 
 }
 
 void RemoteGame::play() {
+	cout << "im in playyyyyyyyyyyyy"<< endl;
 	int tag, n, size;
-    string s;
-
-    char* t;
-    bool flag;
-	//char buffer[9];
-	int counter = 0;
-	void * buffer;
-	char array [3];
-
-	n = read(clientSocket,array,2);
-	//s1 = (string *)buffer;
-	array [2] = '\0';
-	string s1 = array;
-	cout << array[0] << array[1];
-	cout << s1 << "!!!!!!!!!!" <<   endl ;
-
-
-	//find out if you are the first player or the second player to connect
-	n = read(clientSocket,&tag,sizeof(tag));
-	if (tag == 1) {
-		cout << "Waiting for other player" << endl;
-	}
+  string s;
+  bool flag;
+  int counter = 0;
 
 	//the first player chose the board's size and send it to the second player
 	n = read(clientSocket,&tag, sizeof(tag));
+	cout << tag<<" this is your tag!!!!!!!!!!!";
 	if (n == -1) {
 		throw " error reading";
 	}
@@ -124,11 +168,12 @@ void RemoteGame::play() {
                 flag = true;
             }
         } while (flag);
+        cout << size << " the board size.......................";
         write(clientSocket, &size, sizeof(size));
     }else if(tag == 2){
-        cout<<"You are the second player to connect."<<endl;
+        cout<<"You are the second player to connect. wait for the first player to choose size bord"<<endl;
         read(clientSocket,&size,sizeof(size));
-        cout<<"The chosen board's size is: "<<size<<endl;
+
     }
     //building the board
     Board board(size, size);
@@ -137,7 +182,7 @@ void RemoteGame::play() {
 
     //the first player's game
     if(tag == 1){
-        Player *p1 = new HumanPlayer(X);
+        Player *p1 = new RemotePlayer(X);
 		board.print();
 		while((counter < 2) && (fullBoard!=0)) {
 			this->myTurn(counter,fullBoard,logic,p1);
@@ -149,7 +194,8 @@ void RemoteGame::play() {
 		delete p1;
         //the second player's game
 	} else if (tag == 2) {
-			Player *p1 = new HumanPlayer(O);
+			Player *p1 = new RemotePlayer(O);
+			board.print();
 			cout <<endl << "waiting for other player's move..." << endl;
 			while((counter < 2) && (fullBoard!=0)){
 				this->otherTurn(counter,fullBoard,logic,p1);
@@ -165,8 +211,19 @@ void RemoteGame::play() {
 	this->endGame(board, tag);
 }
 void RemoteGame::writeToServer(int x, int y) {
-	 write(clientSocket,&x, sizeof(x));
-	 write(clientSocket,&y, sizeof(y));
+
+stringstream ss; 
+stringstream ss1;
+ss << x;
+string row = ss.str();
+ss1 << y;
+string column = ss1.str();
+
+		string command = "play " +row  + " " + column;
+		const char * c = command.c_str();
+		int l = strlen(c);
+		write(clientSocket, &l, sizeof(l));
+		write(clientSocket, c, l);
 }
 Position RemoteGame::readFromServer() {
 	int r,c;
@@ -183,14 +240,23 @@ void RemoteGame::myTurn(int& counter, int& fullBoard, GameLogic& logic, Player* 
 				counter = 0;
 				fullBoard--;
 				p = p1->playTurn(logic,moves);
+				if (p.getRow() == -1) {
+					string command = "close";
+					const char * c = command.c_str();
+					int l = strlen(c);
+					write(clientSocket, &l, sizeof(l));
+				  write(clientSocket, c, l);
+				  close(clientSocket);
+				  exit(0);
+				} else {
 			  logic.updateBoard(p,p1->getPlayer());
 			  logic.getBoard().print();
-
 				this->writeToServer(p.getRow(),p.getColumn());
+				}
 			}
 			else {
 				cout << endl << "you don't have moves..." << endl;
-				 this->writeToServer(p.getRow(), p.getColumn());
+				 this-> writeToServer(p.getRow(), p.getColumn());
 				 counter++;
 			}
 	cout <<endl << "waiting for other player's move..." << endl;
@@ -202,7 +268,13 @@ void RemoteGame::otherTurn(int& counter, int& fullBoard, GameLogic& logic, Playe
 			if (move == Position (0,0)) { //means the player other has no move
 				cout << "The other player's has no move" << endl;
 				counter++;
-			} else { //update the board according to the move he read
+			} else if (move == Position (-1,-1)) {
+				cout << " the other player quit from the game, bye bye" << endl;
+				close(clientSocket);
+				exit(0);
+
+			}
+			else { //update the board according to the move he read
 				  logic.updateBoard(move,p1->getOther());
 				  logic.getBoard().print();
 				  counter = 0;

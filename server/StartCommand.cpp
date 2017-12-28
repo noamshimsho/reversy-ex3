@@ -33,10 +33,12 @@ void StartCommand::execute(vector<string> args) {
 			write(clientsocket, answer, l);
 		}
 	}
-	 Game g(name, clientsocket);
-	 s.getGames()->push_back(g);
-	 const char * answer = "waiting for another player...";
-	 int l = strlen(answer);
-	 write(clientsocket, &l, sizeof(l));
-	 write(clientsocket, answer, l);
+    Game g(name, clientsocket);
+    s.getGames()->push_back(g);
+    const char * answer = "waiting for another player...";
+    int l = strlen(answer);
+    write(clientsocket, &l, sizeof(l));
+    write(clientsocket, answer, l);
+    int status;
+    pthread_exit(&status);
 }

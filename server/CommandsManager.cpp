@@ -8,13 +8,17 @@
 #include "CommandsManager.h"
 #include "ListCommand.h"
 #include "StartCommand.h"
+#include "JoinCommand.h"
+
 CommandsManager::CommandsManager(){}
 CommandsManager::CommandsManager(Server &s) {
 	commandsMap["list_games"] = new ListCommand(s);
 	commandsMap["start"] = new StartCommand(s);
+    commandsMap["join"] = new JoinCommand(s);
 }
 void CommandsManager::executeCommand(string command,vector<string> args) {
 	Command *commandObj = commandsMap[command];
+    cout<<"command: "<<command<<endl;
 	 commandObj->execute(args);
 }
 CommandsManager::~CommandsManager() {

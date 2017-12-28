@@ -16,9 +16,7 @@
 JoinCommand::JoinCommand(Server &server) :s(server) {}
 
 void JoinCommand::execute(vector<string> args) {
-
-	cout <<endl << "Start command !!!!!!!!!!!" << endl;
-
+    cout<<"in join"<<endl;
 	int clientsocket = atoi(args[args.size() - 1].c_str());
 	args.pop_back();
 	string name = args[0];
@@ -26,14 +24,16 @@ void JoinCommand::execute(vector<string> args) {
 	for (vector<Game>::iterator it = g->begin(); it != g->end(); it++){
 		if(it->getName()  == name && it->isWait()){
 			it->setSecondClient(clientsocket);
-			it->startGAME();
+            const char * answer = "Welcome to the game";
+            int l = strlen(answer);
+            write(clientsocket, &l, sizeof(l));
+            write(clientsocket, answer, l);
+			it->startGame();
 		} else {
-				const char * answer = "there is no such game...";
+				const char * answer = "-1";
 				int l = strlen(answer);
 				write(clientsocket, &l, sizeof(l));
 				write(clientsocket, answer, l);
 		}
 	}
 }
-
-

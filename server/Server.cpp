@@ -34,40 +34,42 @@ struct ThreadArgs {
 };
 
 static void * clientHandle (void * tArgs){
-
- struct ThreadArgs *args = (struct ThreadArgs *) tArgs;
- long clientSocket = args-> client;
- sleep(5);
- //CommandsManager man = args->manager;
- cout << "." << endl;
- int l;
- read(clientSocket,&l,sizeof(l));
- char* answer = new char[l + 1];
- read(clientSocket, answer, l);
- string please (answer);
- delete answer;
- cout << ".." << endl;
- string first_word;                    // string to vector (split)
- istringstream stm(please);
- vector <string> argv;
- string word;
- int flag = 1;
- while (stm >> word) {
-		if (flag == 1) {
-			first_word = word;
-			flag++;
-		} else {
-		argv.push_back(word);
-		}
-	}
- cout << "..." << endl;
-	 stringstream ss;          // convert  clientSocket to string and add it to argv
-	 ss << clientSocket;
-	 string client = ss.str();
-	 argv.push_back(client);
-	 cout << "...." <<first_word<<" "<< argv[0]<< endl;
-	 args->manager.executeCommand(first_word,argv);
-   close(clientSocket);
+     struct ThreadArgs *args = (struct ThreadArgs *) tArgs;
+     long clientSocket = args-> client;
+     while(true) {
+        sleep(5);
+        //CommandsManager man = args->manager;
+        cout << "." << endl;
+        int l;
+        read(clientSocket, &l, sizeof(l));
+        char *answer = new char[l + 1];
+        read(clientSocket, answer, l);
+        answer[l] = '\0';
+        string please(answer);
+        delete answer;
+        cout << ".." << endl;
+        string first_word;                    // string to vector (split)
+        istringstream stm(please);
+        vector<string> argv;
+        string word;
+        int flag = 1;
+        while (stm >> word) {
+            if (flag == 1) {
+                first_word = word;
+                flag++;
+            } else {
+                argv.push_back(word);
+            }
+        }
+        cout << "..." << endl;
+        stringstream ss;          // convert  clientSocket to string and add it to argv
+        ss << clientSocket;
+        string client = ss.str();
+        argv.push_back(client);
+        cout << "...." << first_word << " " << argv[0] << endl;
+         cout<<"in thread"<<endl;
+        args->manager.executeCommand(first_word, argv);
+    }
 }
 
 static void * acceptHandle (void * tArgs){
@@ -91,8 +93,8 @@ static void * acceptHandle (void * tArgs){
 			//pthread_t thread;
 			//args->clientSocket = clientSocket;
 			//args->manager = m;
-				a2[i].client = clientSocket;
-	a2[i].manager = m;
+            a2[i].client = clientSocket;
+	        a2[i].manager = m;
 			int rc;
 			//rc = pthread_create(&thread, NULL,clientHandle,(void*)args);
 			rc = pthread_create(&a1[i], NULL,clientHandle,&a2[i]);
@@ -102,7 +104,6 @@ static void * acceptHandle (void * tArgs){
 			//void* status;
 			//pthread_join(thread, &status);
 			i++;
-			cout << "finish while"<< endl;
 
 			//close(clientSocket);
 			//sleep(10);
@@ -114,7 +115,6 @@ static void * acceptHandle (void * tArgs){
 void Server::stop() {
 	cout << "close server socket" << endl;
 	close(serverSocket);
-
 }
 
 void Server::start() {
@@ -132,45 +132,6 @@ void Server::start() {
 		throw "error on binding";
 	}
 	listen(serverSocket, MAX);
-/*
-  //vector <pthread_t> v1;
-  //vector <ThreadArgs> v2;
-	pthread_t a1[2];
-	ThreadArgs a2[2];
-	int i = 0;
-	ThreadArgs *args = new ThreadArgs;
-	CommandsManager m (*this);
-	   while (true) {
-			    struct sockaddr_in clientAddress;
-			    socklen_t clientAddressLen;
-					cout << "wait............."<<endl;
-					int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLen);
-					if (clientSocket == -1) {
-						throw "error on accept player";
-					}
-
-				//pthread_t thread;
-				//args->clientSocket = clientSocket;
-				//args->manager = m;
-					a2[i].client = clientSocket;
-					a2[i].manager = m;
-				int rc;
-				//rc = pthread_create(&thread, NULL,clientHandle,(void*)args);
-				rc = pthread_create(&a1[i], NULL,clientHandle,&a2[i]);
-				if (rc) {
-					cout << "bad!!!!";
-				}
-				//void* status;
-				//pthread_join(thread, &status);
-				i++;
-				cout << "finish while"<< endl;
-
-				//close(clientSocket);
-				//sleep(10);
-			}
-delete args;
-*/
-
 
 	pthread_t thread;
 	int rc;
@@ -209,22 +170,7 @@ int Server::getServerSocket() const {
 }
 
 void Server::handleClient(int clientSocket, int otherSocket) {
-	int arg1, arg2, n, size;
-    arg1 = 1;
-    arg2 = 2;
-    //send for each player his number- 1 or 2
-    n = write(clientSocket, &arg1, sizeof(arg1));
-    if (n == -1) {
-        cout << "error write arg1" << endl;
-    }
-    n = write(otherSocket, &arg2, sizeof(arg2));
-    if (n == -1) {
-        cout << "error write arg2" << endl;
-    }
-    //read and write the second player the board's size
-    n = read(clientSocket, &size, sizeof(size));
-    n = write(otherSocket, &size, sizeof(size));
-
+	int n;
     bool flag = true;
     int row, column;
     //play the game

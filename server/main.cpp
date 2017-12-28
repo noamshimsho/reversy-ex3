@@ -37,7 +37,7 @@ void m() {
     //read the port from the file
 	int port;
 	ifstream inFile;
-	inFile.open("serverProtocol.txt");
+	inFile.open("protocol.txt");
 	if (inFile.is_open() == false){
 		exit(1);
 	}

@@ -21,7 +21,7 @@ public:
 	void setSecondClient(int secondClient);
 	bool isWait() const;
 	void setWait(bool wait);
-	void startGAME();
+	void startGame ();
 
 private:
 	int firstClient;

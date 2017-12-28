@@ -27,12 +27,16 @@ public:
 		args.pop_back();
 
 		string names = "This is the list of games: \n";
+        int length = names.length()+4;
 		vector<Game> * g = s.getGames();
 		for (vector<Game>::const_iterator it = g->begin(); it != g->end(); it++){
 			if(it->isWait()){
 				names = names + it->getName() +", ";
 			}
 		}
+        if(names.length() < length){
+            names = names+"there is no games";
+        }
 		 const char * answer = names.c_str();
 		 int l = strlen(answer);
 		 write(clientsocket, &l, sizeof(l));

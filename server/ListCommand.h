@@ -30,9 +30,7 @@ public:
         int length = names.length()+4;
 		vector<Game> * g = s.getGames();
 		for (vector<Game>::const_iterator it = g->begin(); it != g->end(); it++){
-			if(it->isWait()){
-				names = names + it->getName() +", ";
-			}
+			names = names + it->getName() +"\n";
 		}
         if(names.length() < length){
             names = names+"there is no games";

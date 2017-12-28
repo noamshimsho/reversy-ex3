@@ -38,8 +38,6 @@ static void * clientHandle (void * tArgs){
      long clientSocket = args-> client;
      while(true) {
         sleep(5);
-        //CommandsManager man = args->manager;
-        cout << "." << endl;
         int l;
         read(clientSocket, &l, sizeof(l));
         char *answer = new char[l + 1];
@@ -47,7 +45,6 @@ static void * clientHandle (void * tArgs){
         answer[l] = '\0';
         string please(answer);
         delete answer;
-        cout << ".." << endl;
         string first_word;                    // string to vector (split)
         istringstream stm(please);
         vector<string> argv;
@@ -66,8 +63,6 @@ static void * clientHandle (void * tArgs){
         ss << clientSocket;
         string client = ss.str();
         argv.push_back(client);
-        cout << "...." << first_word << " " << argv[0] << endl;
-         cout<<"in thread"<<endl;
         args->manager.executeCommand(first_word, argv);
     }
 }
@@ -114,6 +109,7 @@ static void * acceptHandle (void * tArgs){
 
 void Server::stop() {
 	cout << "close server socket" << endl;
+
 	close(serverSocket);
 }
 
@@ -152,9 +148,6 @@ void Server::start() {
 
 }
 
-
-
-
 void Server::deleteName(string& name) {
 	vector <string>::iterator it;
 	for(it = gamesName.begin(); it != gamesName.end(); it++) {
@@ -167,73 +160,6 @@ void Server::deleteName(string& name) {
 
 int Server::getServerSocket() const {
 	return serverSocket;
-}
-
-void Server::handleClient(int clientSocket, int otherSocket) {
-	int n;
-    bool flag = true;
-    int row, column;
-    //play the game
-    while(flag) {
-        n = read(clientSocket, &row, sizeof(row));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-        n = read(clientSocket, &column, sizeof(column));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-        if (row == -1) { //means the player finish the game
-            close(clientSocket);
-            flag = false;
-        } else {
-            n = write(otherSocket, &row, sizeof(row));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-            n = write(otherSocket, &column, sizeof(column));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-        }
-        n = read(otherSocket, &row, sizeof(row));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-        n = read(otherSocket, &column, sizeof(column));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-        if (row == -1) { //means the player finish the game
-            close(otherSocket);
-            flag = false;
-        } else {
-            n = write(clientSocket, &row, sizeof(row));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-            n = write(clientSocket, &column, sizeof(column));
-	if (n == 0) {          // check if one of the player disconnect
-		close(clientSocket);
-		close(otherSocket);
-		flag = false;
-	}
-        }
-    }
 }
 
 vector<Game> *Server::getGames() {

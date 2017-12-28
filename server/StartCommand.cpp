@@ -39,6 +39,7 @@ void StartCommand::execute(vector<string> args) {
     int l = strlen(answer);
     write(clientsocket, &l, sizeof(l));
     write(clientsocket, answer, l);
+
     int status;
     pthread_exit(&status);
 }

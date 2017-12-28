@@ -6,13 +6,15 @@
  */
 
 #include <unistd.h>
+#include <sstream>
 #include "Game.h"
+#include "CommandsManager.h"
+void playTurn(int readPlayer, int writePlayer, CommandsManager &manager);
 
 Game::Game(string gameName, int first) {
 	name = gameName;
 	firstClient = first;
     secondClient = 0;
-	wait = true;
 }
 
 int Game::getFirstClient() const {
@@ -35,20 +37,8 @@ void Game::setSecondClient(int secondClient) {
 	this->secondClient = secondClient;
 }
 
-bool Game::isWait() const {
-	return wait;
-}
-
-void Game::setWait(bool wait) {
-	this->wait = wait;
-}
-
 void Game::startGame () {
-	 //const char * answer = "you are the ";
-	 //int l = strlen(answer);
-	 //write(clientsocket, &l, sizeof(l));
-	 //write(clientsocket, answer, l);
-    cout<<"in start game"<<endl;
+    CommandsManager manager = CommandsManager();
 	int arg1, arg2, n, size;
 	arg1 = 1;
 	arg2 = 2;
@@ -63,6 +53,45 @@ void Game::startGame () {
 	}
 	//read and write the second player the board's size
 	n = read(firstClient, &size, sizeof(size));
-    cout<<"board's size: "<<size<<endl;
 	n = write(secondClient, &size, sizeof(size));
+    while(true) {
+        playTurn(this->getFirstClient(), this->getSecondClient(), manager);
+        cout<<"finish first turn"<<endl;
+        playTurn(this->getSecondClient(), this->getFirstClient(), manager);
+    }
+
+
+}
+void playTurn(int readPlayer, int writePlayer, CommandsManager &manager){
+    int l;
+    cout<<"in play turn"<<endl;
+    read(readPlayer, &l, sizeof(l)); //read the player's command(play or close)
+    char *answer = new char[l + 1];
+    read(readPlayer, answer, l);
+    answer[l] = '\0';
+    string please(answer);
+    delete answer;
+    string first_word;                    // string to vector (split)
+    istringstream stm(please);
+    vector<string> argv;
+    string word;
+    int flag = 1;
+    while (stm >> word) {
+        if (flag == 1) {
+            first_word = word;
+            flag++;
+        } else {
+            argv.push_back(word);
+        }
+    }
+    stringstream ss;          // convert  clientSocket to string and add it to argv
+    ss << readPlayer;
+    string client = ss.str();
+    argv.push_back(client);
+    stringstream ss1;
+    ss1<< writePlayer;
+    client = ss1.str();
+    argv.push_back(client);
+    manager.executeCommand(first_word, argv);
+
 }

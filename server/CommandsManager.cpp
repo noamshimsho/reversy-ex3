@@ -9,8 +9,14 @@
 #include "ListCommand.h"
 #include "StartCommand.h"
 #include "JoinCommand.h"
+#include "CloseCommand.h"
+#include "PlayCommand.h"
 
-CommandsManager::CommandsManager(){}
+CommandsManager::CommandsManager () {
+    commandsMap["close"] = new CloseCommand();
+    commandsMap["play"] = new PlayCommand();
+}
+
 CommandsManager::CommandsManager(Server &s) {
 	commandsMap["list_games"] = new ListCommand(s);
 	commandsMap["start"] = new StartCommand(s);
@@ -27,4 +33,3 @@ CommandsManager::~CommandsManager() {
 		delete it->second;
 	}
 }
-

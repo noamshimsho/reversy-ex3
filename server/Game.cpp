@@ -2,27 +2,43 @@
  * Game.cpp
  *
  *  Created on: 25 בדצמ׳ 2017
- *      Author: noam
+ *       Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
  */
 
 #include <unistd.h>
 #include <sstream>
 #include "Game.h"
 #include "CommandsManager.h"
-void playTurn(int readPlayer, int writePlayer, CommandsManager &manager);
+/**
+ * this method make a turn for each player at a time
+ * @param readPlayer the player to read from
+ * @param writePlayer the player to write to
+ * @param manager send to execute the command the write player write
+ * @param game this game
+ */
+void playTurn(int readPlayer, int writePlayer, CommandsManager &manager, Game *game);
 
 Game::Game(string gameName, int first) {
 	name = gameName;
 	firstClient = first;
     secondClient = 0;
+    this->isWait = true;
+    this->isFinish = false;
 }
-
+void Game::setIsFinish (bool finish) {
+    this->isFinish = finish;
+}
+void Game::setIsWait (bool wait) {
+    this->isWait = wait;
+}
+bool Game::getIsFinish () {
+    return this->isFinish;
+}
+bool Game::getIsWait () {
+    return this->isWait;
+}
 int Game::getFirstClient() const {
 	return firstClient;
-}
-
-void Game::setFirstClient(int firstClient) {
-	this->firstClient = firstClient;
 }
 
 const string& Game::getName() const {
@@ -51,20 +67,18 @@ void Game::startGame () {
 	if (n == -1) {
 		cout << "error write arg2" << endl;
 	}
-	//read and write the second player the board's size
+	//read from the first player the board's size and write it to the second player
 	n = read(firstClient, &size, sizeof(size));
 	n = write(secondClient, &size, sizeof(size));
+    //make the players turns
     while(true) {
-        playTurn(this->getFirstClient(), this->getSecondClient(), manager);
-        cout<<"finish first turn"<<endl;
-        playTurn(this->getSecondClient(), this->getFirstClient(), manager);
+        playTurn(this->getFirstClient(), this->getSecondClient(), manager, this);
+        playTurn(this->getSecondClient(), this->getFirstClient(), manager, this);
     }
 
-
 }
-void playTurn(int readPlayer, int writePlayer, CommandsManager &manager){
+void playTurn(int readPlayer, int writePlayer, CommandsManager &manager, Game *game){
     int l;
-    cout<<"in play turn"<<endl;
     read(readPlayer, &l, sizeof(l)); //read the player's command(play or close)
     char *answer = new char[l + 1];
     read(readPlayer, answer, l);
@@ -77,10 +91,10 @@ void playTurn(int readPlayer, int writePlayer, CommandsManager &manager){
     string word;
     int flag = 1;
     while (stm >> word) {
-        if (flag == 1) {
+        if (flag == 1) { //the first word is the command
             first_word = word;
             flag++;
-        } else {
+        } else { //the other words is the arguments for the command
             argv.push_back(word);
         }
     }
@@ -92,6 +106,9 @@ void playTurn(int readPlayer, int writePlayer, CommandsManager &manager){
     ss1<< writePlayer;
     client = ss1.str();
     argv.push_back(client);
+    if(first_word == "close"){
+        game->setIsFinish(true);
+    }
+    //execute the writen command
     manager.executeCommand(first_word, argv);
-
 }

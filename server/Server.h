@@ -12,6 +12,9 @@
 #include <string>
 #include "Game.h"
 using namespace std;
+/**
+ * this class repersent a server
+ */
 class Server {
 public:
     /*
@@ -27,11 +30,21 @@ public:
      * close the connection
      */
 	void stop();
-
+	/**
+	 * this method delete name from the list of games
+	 * @param name the name to delete
+	 */
 	void deleteName (string &name);
-	vector <string> gamesName;
+	/**
+	 * @return vector with the list of games
+	 */
 	vector <Game> *getGames();
+	/**
+	 * @return the number of the server socket
+	 */
 	int getServerSocket() const;
+	//vector that hold the list of games
+	vector <string> gamesName;
 
 private:
 	int port;
@@ -39,12 +52,6 @@ private:
 	//vector <string> gamesName;
 	vector <Game> games;
 
-
-
-    /*
-     * this method read the first player move and write it to the second player and vice versa
-     */
-	void handleClient(int clinetSocket, int otherSocket);
 };
 
 #endif /* SERVER_H_ */

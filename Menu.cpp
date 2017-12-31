@@ -83,6 +83,6 @@ void Menu::startGame(int choise, int size) {
         } catch (const char *msg) {
     	    cout << "failed connect to server. Reason: " << msg << endl;
         }
-    	  remote.play();
+    	 // remote.play();
     }
 }

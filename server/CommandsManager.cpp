@@ -2,9 +2,8 @@
  * CommandsManager.cpp
  *
  *  Created on: 20 בדצמ׳ 2017
- *      Author: noam
+ *       Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
  */
-
 #include "CommandsManager.h"
 #include "ListCommand.h"
 #include "StartCommand.h"
@@ -24,11 +23,11 @@ CommandsManager::CommandsManager(Server &s) {
 }
 void CommandsManager::executeCommand(string command,vector<string> args) {
 	Command *commandObj = commandsMap[command];
-    cout<<"command: "<<command<<endl;
-	 commandObj->execute(args);
+    commandObj->execute(args);
 }
 CommandsManager::~CommandsManager() {
 	map<string, Command *>::iterator it;
+    //delete the map
 	for (it = commandsMap.begin(); it != commandsMap.end(); it++) {
 		delete it->second;
 	}

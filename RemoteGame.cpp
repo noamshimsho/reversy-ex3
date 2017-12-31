@@ -47,10 +47,8 @@ void RemoteGame::connectToServer() {
 	if (connect(clientSocket, (struct sockaddr *)& serverAddress, sizeof(serverAddress)) == -1) {
 		throw "error connecting to server";
 	}
-	bool flag = true;
 	cout << "Connected to server" << endl;
-	while(flag) {
-
+	while(true) {
         cout << "Your possible commands are:" << endl;
         cout << "if you want to see the list of games enter - list_games" << endl;
         cout << "if you want to start a new game enter - start <name>" << endl;
@@ -68,7 +66,6 @@ void RemoteGame::connectToServer() {
             } else {
                 cout <<please <<endl;
                 this->play();
-                flag = false;
             }
         } else if (first_word == "list_games") {
             string please = this->sendCommands(command);
@@ -84,18 +81,25 @@ void RemoteGame::connectToServer() {
         }
 	}
 }
+void RemoteGame::quitServer(int n){
+    if(n==0){
+        cout<<"the server quit, bye bye"<<endl;
+        close(this->clientSocket);
+    }
+}
 string RemoteGame::sendCommands(string command){
     const char * c = command.c_str();
     int l = strlen(c);
-    write(clientSocket, &l, sizeof(l));
-    write(clientSocket, c, l);
     int n;
+    n=write(clientSocket, &l, sizeof(l));
+    this->quitServer(n);
+    n=write(clientSocket, c, l);
+    this->quitServer(n);
     n = read(clientSocket,&l,sizeof(l));
-    if (n == 0) {
-        close(clientSocket);
-    }
+    this->quitServer(n);
     char* answer = new char[l+1];
-    read(clientSocket, answer, l);
+    n=read(clientSocket, answer, l);
+    this->quitServer(n);
     answer[l] ='\0';
     string please (answer);
     delete answer;
@@ -108,9 +112,7 @@ void RemoteGame::play() {
     int counter = 0;
 	//the first player chose the board's size and send it to the second player
 	n = read(clientSocket,&tag, sizeof(tag));
-	if (n == -1) {
-		throw " error reading";
-	}
+    this->quitServer(n);
 	if (tag == 1) {
         cout << "You are the first player to connect so you can chose the board's size." << endl;
         do {
@@ -124,11 +126,13 @@ void RemoteGame::play() {
                 flag = true;
             }
         } while (flag);
-        write(clientSocket, &size, sizeof(size));
+        n=write(clientSocket, &size, sizeof(size));
+        this->quitServer(n);
     }else if(tag == 2){
-        cout<<"You are the second player to connect. wait for the first player to choose size bord"<<endl;
-        read(clientSocket,&size,sizeof(size));
-
+        cout<<"You are the second player to connect."<<endl;
+        cout<<"wait for the first player to choose size bord"<<endl;
+        n=read(clientSocket,&size,sizeof(size));
+        this->quitServer(n);
     }
     //building the board
     Board board(size, size);
@@ -166,6 +170,7 @@ void RemoteGame::play() {
 	this->endGame(board, tag);
 }
 void RemoteGame::writeToServer(int x, int y) {
+    int n;
     stringstream ss;
     stringstream ss1;
     ss << x;
@@ -175,19 +180,24 @@ void RemoteGame::writeToServer(int x, int y) {
     string command = "play " +row  + " " + column;
     const char * c = command.c_str();
     int l = strlen(c);
-    write(clientSocket, &l, sizeof(l));
-    write(clientSocket, c, l);
+    n=write(clientSocket, &l, sizeof(l));
+    this->quitServer(n);
+    n=write(clientSocket, c, l);
+    this->quitServer(n);
 }
 Position RemoteGame::readFromServer() {
-	int r,c;
-	read(clientSocket,&r,sizeof(r));
-	read(clientSocket,&c,sizeof(c));
-	Position p(r,c);
+	int r,c, n;
+	n=read(clientSocket,&r,sizeof(r));
+    this->quitServer(n);
+    n=read(clientSocket,&c,sizeof(c));
+    this->quitServer(n);
+    Position p(r,c);
 	return p;
 }
 
 void RemoteGame::myTurn(int& counter, int& fullBoard, GameLogic& logic, Player* p1) {
 	Position p(0,0);
+    int n;
 	vector <Position> moves = p1->hasMove(logic);
 	if (!moves.empty()) { //means there is moves the player can do
         counter = 0;
@@ -197,8 +207,10 @@ void RemoteGame::myTurn(int& counter, int& fullBoard, GameLogic& logic, Player* 
             string command = "close";
             const char * c = command.c_str();
             int l = strlen(c);
-            write(clientSocket, &l, sizeof(l));
-            write(clientSocket, c, l);
+            n=write(clientSocket, &l, sizeof(l));
+            this->quitServer(n);
+            n=write(clientSocket, c, l);
+            this->quitServer(n);
             close(clientSocket);
             exit(0);
         } else {
@@ -259,12 +271,15 @@ void RemoteGame:: endGame(Board & board, int tag)  {
 	else {
 		cout << " good game it is a draw!!!"<<endl;
 	}
+    int n;
     if(tag==1){
         string command = "close";
         const char * c = command.c_str();
         int l = strlen(c);
-        write(clientSocket, &l, sizeof(l));
-        write(clientSocket, c, l);
+        n=write(clientSocket, &l, sizeof(l));
+        this->quitServer(n);
+        n=write(clientSocket, c, l);
+        this->quitServer(n);
         close(clientSocket);
         exit(0);
     } else if(tag == 2){

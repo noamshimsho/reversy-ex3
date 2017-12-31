@@ -2,7 +2,7 @@
  * StartCommand.cpp
  *
  *  Created on: 25 בדצמ׳ 2017
- *      Author: noam
+ *       Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
  */
 
 #include "StartCommand.h"
@@ -16,30 +16,31 @@
 StartCommand::StartCommand(Server &server) :s(server) {}
 
 void StartCommand::execute(vector<string> args) {
-
-	cout <<endl << "Start command !!!!!!!!!!!" << endl;
-
+	//the client who strat is the last argument in the vector
 	int clientsocket = atoi(args[args.size() - 1].c_str());
 	args.pop_back();
+	//the name of the requested game to start
 	string name = args[0];
-
-	//string names = "This is the list of games: \n";
-
+	//checking if the asked name to start the game is valid (not exist already)
 	for (vector<string>::const_iterator it = s.gamesName.begin(); it != s.gamesName.end(); it++){
+		//if the name isn't valid
 		if(name == *it){
+			//send to the client -1 which means wrong name
 			const char * answer  = "-1";
 			int l = strlen(answer);
 			write(clientsocket, &l, sizeof(l));
 			write(clientsocket, answer, l);
 		}
 	}
+	//if the name is valid create a game with that name
     Game g(name, clientsocket);
     s.getGames()->push_back(g);
+	//send message that the player should wait for another player to connect
     const char * answer = "waiting for another player...";
     int l = strlen(answer);
     write(clientsocket, &l, sizeof(l));
     write(clientsocket, answer, l);
-
     int status;
+	//close the thread
     pthread_exit(&status);
 }

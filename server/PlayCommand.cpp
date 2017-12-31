@@ -1,5 +1,5 @@
 //
-// Created by sarit on 28/12/17.
+//       Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
 //
 
 #include <cstdlib>
@@ -7,8 +7,9 @@
 #include "PlayCommand.h"
 
 PlayCommand::PlayCommand () {}
+
 void PlayCommand::execute (vector<string> args) {
-    cout<<"in play command/ execute"<<endl;
+    //write the column and row to the client
     int row = atoi(args[0].c_str());
     int col = atoi(args[1].c_str());
     int client = atoi(args[args.size()-1].c_str());

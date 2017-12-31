@@ -2,7 +2,7 @@
  * ListCommand.h
  *
  *  Created on: 20 בדצמ׳ 2017
- *      Author: noam
+ *       Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
  */
 
 #ifndef LISTCOMMAND_H_
@@ -15,38 +15,24 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <unistd.h>
-
+/**
+ * this class represent list command
+ * this class inherit from Command class
+ */
 class ListCommand: public Command {
-
 public:
+	/**
+	 * construct a list command from a given server
+	 * @param server the given server
+	 */
 	ListCommand(Server &server);
-	virtual void execute(vector <string> args) {
-		cout <<endl << "list commmmmand!!!!!!!!!!!" << endl;
-
-		int clientsocket = atoi(args[args.size() - 1].c_str());
-		args.pop_back();
-
-		string names = "This is the list of games: \n";
-        int length = names.length()+4;
-		vector<Game> * g = s.getGames();
-		for (vector<Game>::const_iterator it = g->begin(); it != g->end(); it++){
-			names = names + it->getName() +"\n";
-		}
-        if(names.length() < length){
-            names = names+"there is no games";
-        }
-		 const char * answer = names.c_str();
-		 int l = strlen(answer);
-		 write(clientsocket, &l, sizeof(l));
-		 write(clientsocket, answer, l);
-
-	}
+	/**
+     * this method execute the list command
+     * @param args the arguments to list the games
+     */
+    void execute(vector <string> args);
 private:
 	Server &s;
 };
-ListCommand::ListCommand(Server &server): s(server){}
 
 #endif /* LISTCOMMAND_H_ */
-
-
-

@@ -22,9 +22,6 @@
 #define SIZE 6
 
 Server::Server(int port): port(port), serverSocket(0){
-	gamesName.push_back("Noam");
-	gamesName.push_back("Sarit");
-	gamesName.push_back("Beer");
 	cout << "server "<< endl;
 }
 
@@ -37,7 +34,6 @@ static void * clientHandle (void * tArgs){
      struct ThreadArgs *args = (struct ThreadArgs *) tArgs;
      long clientSocket = args-> client;
      while(true) {
-        sleep(5);
         int l;
         read(clientSocket, &l, sizeof(l));
         char *answer = new char[l + 1];
@@ -58,7 +54,6 @@ static void * clientHandle (void * tArgs){
                 argv.push_back(word);
             }
         }
-        cout << "..." << endl;
         stringstream ss;          // convert  clientSocket to string and add it to argv
         ss << clientSocket;
         string client = ss.str();
@@ -68,48 +63,59 @@ static void * clientHandle (void * tArgs){
 }
 
 static void * acceptHandle (void * tArgs){
-		Server *s = (Server *)tArgs;
-	  //vector <pthread_t> v1;
-	  //vector <ThreadArgs> v2;
-		pthread_t a1[2];
-		ThreadArgs a2[2];
-		int i = 0;
-		ThreadArgs *args = new ThreadArgs;
-		CommandsManager m (*s);
-	   while (true) {
-		    struct sockaddr_in clientAddress;
-		    socklen_t clientAddressLen;
-				cout << "wait............."<<endl;
-				int clientSocket = accept(s->getServerSocket(), (struct sockaddr *)&clientAddress, &clientAddressLen);
-				if (clientSocket == -1) {
-					throw "error on accept player";
-				}
-
-			//pthread_t thread;
-			//args->clientSocket = clientSocket;
-			//args->manager = m;
-            a2[i].client = clientSocket;
-	        a2[i].manager = m;
-			int rc;
-			//rc = pthread_create(&thread, NULL,clientHandle,(void*)args);
-			rc = pthread_create(&a1[i], NULL,clientHandle,&a2[i]);
-			if (rc) {
-				cout << "bad!!!!";
-			}
-			//void* status;
-			//pthread_join(thread, &status);
-			i++;
-
-			//close(clientSocket);
-			//sleep(10);
-		}
-	    delete args;
-
+    Server *s = (Server *)tArgs;
+    //vector <pthread_t*> v1;
+    //vector <ThreadArgs*> v2;
+    pthread_t a1[10];
+    ThreadArgs a2[10];
+    int i = 0;
+    ThreadArgs *args = new ThreadArgs;
+    CommandsManager m (*s);
+    while (true) {
+        struct sockaddr_in clientAddress;
+        socklen_t clientAddressLen;
+        cout << "wait............."<<endl;
+        int clientSocket = accept(s->getServerSocket(), (struct sockaddr *)&clientAddress, &clientAddressLen);
+        if (clientSocket == -1) {
+            throw "error on accept player";
+        }
+        //v1.push_back(new pthread_t);
+        //v2.push_back(new ThreadArgs);
+        //v2[i]->client = clientSocket;
+        //v2[i]->manager = m;
+        //args->client = clientSocket;
+        //args->manager = m;
+        a2[i].client = clientSocket;
+        a2[i].manager = m;
+        int rc;
+        rc = pthread_create(&a1[i], NULL,clientHandle, &a2[i]);
+        //rc = pthread_create(&a1[i], NULL,clientHandle,&a2[i]);
+        if (rc) {
+            cout << "bad!!!!";
+        }
+        i++;
+        //ThreadArgs *newArgs = new(*args) ThreadArgs;
+        //v2.push_back(*newArgs);
+        //close(clientSocket);
+        //sleep(10);
+    }
+    delete args;
 }
 
 void Server::stop() {
 	cout << "close server socket" << endl;
-
+    vector<Game> * g = this->getGames();
+    for (vector<Game>::iterator it = g->begin(); it != g->end(); it++){
+        if(it->getIsFinish()){
+            g->erase(it);
+        }
+        if(it->getIsWait()) {
+            close(it->getFirstClient());
+        } else{
+            close(it->getFirstClient());
+            close(it->getSecondClient());
+        }
+    }
 	close(serverSocket);
 }
 

@@ -21,11 +21,17 @@ public:
 	int getSecondClient() const;
 	void setSecondClient(int secondClient);
 	void startGame ();
+	bool getfinish() const;
+	void setIsfinish(bool isfinish);
+	bool getWait() const;
+	void setIsWait(bool isWait);
 
 private:
 	int firstClient;
 	int secondClient;
 	string name;
+	bool isWait;
+	bool isFinish;
 };
 
 #endif /* GAME_H_ */

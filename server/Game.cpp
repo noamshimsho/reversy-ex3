@@ -9,12 +9,14 @@
 #include <sstream>
 #include "Game.h"
 #include "CommandsManager.h"
-void playTurn(int readPlayer, int writePlayer, CommandsManager &manager);
+void playTurn(int readPlayer, int writePlayer, CommandsManager &manager, Game *g);
 
 Game::Game(string gameName, int first) {
 	name = gameName;
 	firstClient = first;
-    secondClient = 0;
+  secondClient = 0;
+  isWait = true;
+  isFinish = false;
 }
 
 int Game::getFirstClient() const {
@@ -55,14 +57,13 @@ void Game::startGame () {
 	n = read(firstClient, &size, sizeof(size));
 	n = write(secondClient, &size, sizeof(size));
     while(true) {
-        playTurn(this->getFirstClient(), this->getSecondClient(), manager);
-        cout<<"finish first turn"<<endl;
-        playTurn(this->getSecondClient(), this->getFirstClient(), manager);
+        playTurn(this->getFirstClient(), this->getSecondClient(), manager, this);
+        playTurn(this->getSecondClient(), this->getFirstClient(), manager, this);
     }
 
 
 }
-void playTurn(int readPlayer, int writePlayer, CommandsManager &manager){
+void playTurn(int readPlayer, int writePlayer, CommandsManager &manager, Game *g){
     int l;
     cout<<"in play turn"<<endl;
     read(readPlayer, &l, sizeof(l)); //read the player's command(play or close)
@@ -92,6 +93,25 @@ void playTurn(int readPlayer, int writePlayer, CommandsManager &manager){
     ss1<< writePlayer;
     client = ss1.str();
     argv.push_back(client);
+    if (first_word == "close" ) {
+    	  g->setIsfinish(true);
+    }
     manager.executeCommand(first_word, argv);
 
+}
+
+bool Game::getfinish() const {
+	return isFinish;
+}
+
+void Game::setIsfinish(bool isfinish) {
+	this->isFinish = isfinish;
+}
+
+bool Game::getWait() const {
+	return isWait;
+}
+
+void Game::setIsWait(bool isWait) {
+	this->isWait = isWait;
 }

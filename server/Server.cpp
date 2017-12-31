@@ -22,9 +22,6 @@
 #define SIZE 6
 
 Server::Server(int port): port(port), serverSocket(0){
-	gamesName.push_back("Noam");
-	gamesName.push_back("Sarit");
-	gamesName.push_back("Beer");
 	cout << "server "<< endl;
 }
 
@@ -37,7 +34,6 @@ static void * clientHandle (void * tArgs){
      struct ThreadArgs *args = (struct ThreadArgs *) tArgs;
      long clientSocket = args-> client;
      while(true) {
-        sleep(5);
         int l;
         read(clientSocket, &l, sizeof(l));
         char *answer = new char[l + 1];
@@ -69,10 +65,10 @@ static void * clientHandle (void * tArgs){
 
 static void * acceptHandle (void * tArgs){
 		Server *s = (Server *)tArgs;
-	  //vector <pthread_t> v1;
-	  //vector <ThreadArgs> v2;
-		pthread_t a1[2];
-		ThreadArgs a2[2];
+	  //vector <pthread_t*> v1;
+	  //vector <ThreadArgs*> v2;
+		pthread_t a1[10];
+		ThreadArgs a2[10];
 		int i = 0;
 		ThreadArgs *args = new ThreadArgs;
 		CommandsManager m (*s);
@@ -85,23 +81,21 @@ static void * acceptHandle (void * tArgs){
 					throw "error on accept player";
 				}
 
-			//pthread_t thread;
-			//args->clientSocket = clientSocket;
+			//v1.push_back(new pthread_t);
+			//v2.push_back(new ThreadArgs);
+			//v2[i]->client = clientSocket;
+			//v2[i]->manager = m;
+			//args->client = clientSocket;
 			//args->manager = m;
-            a2[i].client = clientSocket;
-	        a2[i].manager = m;
+      a2[i].client = clientSocket;
+	    a2[i].manager = m;
 			int rc;
-			//rc = pthread_create(&thread, NULL,clientHandle,(void*)args);
+			//rc = pthread_create(v1[i], NULL,clientHandle,v2[i]);
 			rc = pthread_create(&a1[i], NULL,clientHandle,&a2[i]);
 			if (rc) {
 				cout << "bad!!!!";
 			}
-			//void* status;
-			//pthread_join(thread, &status);
 			i++;
-
-			//close(clientSocket);
-			//sleep(10);
 		}
 	    delete args;
 
@@ -109,7 +103,16 @@ static void * acceptHandle (void * tArgs){
 
 void Server::stop() {
 	cout << "close server socket" << endl;
-
+	for (vector<Game>::iterator it = this->getGames()->begin(); it != this->getGames()->end(); it++){
+		if(!it-> getfinish()){
+			if(it->getWait()) {
+				close(it->getFirstClient());
+			} else {
+				close(it->getFirstClient());
+				close(it->getSecondClient());
+			}
+		}
+	}
 	close(serverSocket);
 }
 

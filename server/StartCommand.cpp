@@ -22,9 +22,7 @@ void StartCommand::execute(vector<string> args) {
 	int clientsocket = atoi(args[args.size() - 1].c_str());
 	args.pop_back();
 	string name = args[0];
-
-	//string names = "This is the list of games: \n";
-
+	pthread_mutex_lock(&m1);
 	for (vector<string>::const_iterator it = s.gamesName.begin(); it != s.gamesName.end(); it++){
 		if(name == *it){
 			const char * answer  = "-1";
@@ -33,13 +31,14 @@ void StartCommand::execute(vector<string> args) {
 			write(clientsocket, answer, l);
 		}
 	}
-    Game g(name, clientsocket);
-    s.getGames()->push_back(g);
-    const char * answer = "waiting for another player...";
-    int l = strlen(answer);
-    write(clientsocket, &l, sizeof(l));
-    write(clientsocket, answer, l);
+	pthread_mutex_unlock(&m1);
+  Game g(name, clientsocket);
+  s.getGames()->push_back(g);
+  const char * answer = "waiting for another player...";
+  int l = strlen(answer);
+  write(clientsocket, &l, sizeof(l));
+  write(clientsocket, answer, l);
 
-    int status;
-    pthread_exit(&status);
+  int status;
+  pthread_exit(&status);
 }

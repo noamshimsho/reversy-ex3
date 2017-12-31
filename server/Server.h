@@ -13,6 +13,8 @@
 #include "Game.h"
 using namespace std;
 class Server {
+
+
 public:
     /*
      * construct the server from a given integer
@@ -24,7 +26,7 @@ public:
      */
 	void start();
     /*
-     * close the connection
+   * close the connection
      */
 	void stop();
 
@@ -36,9 +38,7 @@ public:
 private:
 	int port;
 	int serverSocket;
-	//vector <string> gamesName;
 	vector <Game> games;
-
 
 
     /*

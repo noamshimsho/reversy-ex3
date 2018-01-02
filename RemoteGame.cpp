@@ -62,7 +62,7 @@ void RemoteGame::connectToServer() {
         if (first_word == "start") {
             string please = this->sendCommands(command);
             if (please == "-1") {
-                cout << "Wrong name, try another one..." << endl;
+                cout << "The name is already exist, try another one..." << endl;
             } else {
                 cout <<please <<endl;
                 this->play();
@@ -85,6 +85,7 @@ void RemoteGame::quitServer(int n){
     if(n==0){
         cout<<"the server quit, bye bye"<<endl;
         close(this->clientSocket);
+        exit(0);
     }
 }
 string RemoteGame::sendCommands(string command){

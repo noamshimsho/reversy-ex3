@@ -19,8 +19,8 @@
 void playTurn(int readPlayer, int writePlayer, CommandsManager &manager, Game *game);
 
 Game::Game(string gameName, int first) {
-	name = gameName;
-	firstClient = first;
+	  name = gameName;
+	  firstClient = first;
     secondClient = 0;
     this->isWait = true;
     this->isFinish = false;
@@ -54,7 +54,7 @@ void Game::setSecondClient(int secondClient) {
 }
 
 void Game::startGame () {
-    CommandsManager manager = CommandsManager();
+  CommandsManager manager = CommandsManager();
 	int arg1, arg2, n, size;
 	arg1 = 1;
 	arg2 = 2;
@@ -71,10 +71,10 @@ void Game::startGame () {
 	n = read(firstClient, &size, sizeof(size));
 	n = write(secondClient, &size, sizeof(size));
     //make the players turns
-    while(true) {
-        playTurn(this->getFirstClient(), this->getSecondClient(), manager, this);
-        playTurn(this->getSecondClient(), this->getFirstClient(), manager, this);
-    }
+   while(true) {
+       playTurn(this->getFirstClient(), this->getSecondClient(), manager, this);
+       playTurn(this->getSecondClient(), this->getFirstClient(), manager, this);
+      }
 
 }
 void playTurn(int readPlayer, int writePlayer, CommandsManager &manager, Game *game){

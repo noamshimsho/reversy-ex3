@@ -11,8 +11,6 @@
 #include <iostream>
 #include <vector>
 #include <stdlib.h>
-#include <sstream>
-
 using namespace std;
 
 
@@ -53,5 +51,6 @@ Position HumanPlayer::playTurn(GameLogic logic, vector<Position> &moves) const {
 
 				Position p(row,column);
 				return p;
-
 }
+
+

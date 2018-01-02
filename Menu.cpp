@@ -72,7 +72,7 @@ void Menu::startGame(int choise, int size) {
     	string IP;
     	const char* ip;
     	ifstream inFile;
-    	inFile.open("protocol.txt");
+    	inFile.open("clientProtocol.txt");
     	inFile >> IP;
     	inFile >> port;
     	inFile.close();
@@ -83,6 +83,6 @@ void Menu::startGame(int choise, int size) {
         } catch (const char *msg) {
     	    cout << "failed connect to server. Reason: " << msg << endl;
         }
-    	 // remote.play();
+    	  //remote.play();
     }
 }

@@ -67,8 +67,8 @@ private:
 	int firstClient;
 	int secondClient;
 	string name;
-    int isWait;
-    int isFinish;
+  bool isWait;
+  bool isFinish;
 };
 
 #endif /* GAME_H_ */

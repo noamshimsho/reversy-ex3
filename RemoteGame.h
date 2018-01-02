@@ -23,6 +23,7 @@ public:
      * this method play the remote game
      */
 	void play();
+	string sendCommands(string command);
 private:
 	const char*serverIP;
 	int serverPort;
@@ -60,12 +61,6 @@ private:
      * @param tag- the player's number to announce the winning
      */
 	void endGame(Board &board, int tag);
-	/**
-	 * send commands to the server according to the player's command
-	 * @param command the player's command
-	 * @return answer from the server
-	 */
-	string sendCommands(string command);
 	/**
 	 * close the socket if the server quit
 	 * @param n the integer that announce if the server quti

@@ -10,16 +10,19 @@
 #include "JoinCommand.h"
 #include "CloseCommand.h"
 #include "PlayCommand.h"
+#include "EndCommand.h"
 
 CommandsManager::CommandsManager () {
-    commandsMap["close"] = new CloseCommand();
-    commandsMap["play"] = new PlayCommand();
+  commandsMap["close"] = new CloseCommand();
+  commandsMap["play"] = new PlayCommand();
+  commandsMap["end"] = new EndCommand();
+
 }
 
 CommandsManager::CommandsManager(Server &s) {
 	commandsMap["list_games"] = new ListCommand(s);
 	commandsMap["start"] = new StartCommand(s);
-    commandsMap["join"] = new JoinCommand(s);
+  commandsMap["join"] = new JoinCommand(s);
 }
 void CommandsManager::executeCommand(string command,vector<string> args) {
 	Command *commandObj = commandsMap[command];

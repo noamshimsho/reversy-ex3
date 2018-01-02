@@ -30,11 +30,7 @@ public:
      * close the connection
      */
 	void stop();
-	/**
-	 * this method delete name from the list of games
-	 * @param name the name to delete
-	 */
-	void deleteName (string &name);
+
 	/**
 	 * @return vector with the list of games
 	 */
@@ -43,14 +39,14 @@ public:
 	 * @return the number of the server socket
 	 */
 	int getServerSocket() const;
-	//vector that hold the list of games
-	vector <string> gamesName;
+	 vector<pthread_t*>& getV1();
 
 private:
 	int port;
 	int serverSocket;
-	//vector <string> gamesName;
 	vector <Game> games;
+	vector <pthread_t*> v1;
+
 
 };
 

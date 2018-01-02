@@ -45,6 +45,6 @@ int main() {
 	} catch (const char *msg) {
 		cout << "cannot start server. Reason: " << msg << endl;
 	}
-	server.stop();
+	//server.stop();
 	return 0;
 }

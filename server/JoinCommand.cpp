@@ -17,11 +17,11 @@
 JoinCommand::JoinCommand(Server &server) :s(server) {}
 
 void JoinCommand::execute(vector<string> args) {
-    //the client to join is the last argument in the vector
+  //the client to join is the last argument in the vector
 	int clientsocket = atoi(args[args.size() - 1].c_str());
 	args.pop_back();
 	string name = args[0];
-    bool flag = true;
+  bool flag = true;
 	vector<Game> * g = s.getGames();
     //checking if the asked to join game is valid
 	for (vector<Game>::iterator it = g->begin(); it != g->end(); it++){

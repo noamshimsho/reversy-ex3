@@ -20,10 +20,6 @@ void ListCommand::execute(vector<string> args) {
         if(it->getIsWait()) {
             names = names + it->getName() + "\n";
         }
-        //delete games from the list if they are already finished
-        if(it->getIsFinish()){
-           g->erase(it);
-        }
     }
     //if there is no game write that
     if(!(g->size()>0)) {

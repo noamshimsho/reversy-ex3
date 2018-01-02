@@ -4,7 +4,6 @@
  *  Created on: 27 בנוב׳ 2017
  *       Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
  */
-
 #include "Server.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -16,10 +15,10 @@
 #include "CommandsManager.h"
 #include <sstream>
 #include "Game.h"
+#include <signal.h>
 
 
 #define MAX 10
-#define SIZE 6
 
 Server::Server(int port): port(port), serverSocket(0){
 	cout << "server "<< endl;
@@ -65,11 +64,9 @@ static void * clientHandle (void * tArgs){
 static void * acceptHandle (void * tArgs){
     Server *s = (Server *)tArgs;
     //vector <pthread_t*> v1;
-    //vector <ThreadArgs*> v2;
-    pthread_t a1[10];
-    ThreadArgs a2[10];
+    vector <ThreadArgs*> v2;
     int i = 0;
-    ThreadArgs *args = new ThreadArgs;
+
     CommandsManager m (*s);
     while (true) {
         struct sockaddr_in clientAddress;
@@ -79,43 +76,35 @@ static void * acceptHandle (void * tArgs){
         if (clientSocket == -1) {
             throw "error on accept player";
         }
-        //v1.push_back(new pthread_t);
-        //v2.push_back(new ThreadArgs);
-        //v2[i]->client = clientSocket;
-        //v2[i]->manager = m;
-        //args->client = clientSocket;
-        //args->manager = m;
-        a2[i].client = clientSocket;
-        a2[i].manager = m;
+
+        s->getV1().push_back(new pthread_t);
+        v2.push_back(new ThreadArgs);
+        v2[i]->client = clientSocket;
+        v2[i]->manager = m;
         int rc;
-        rc = pthread_create(&a1[i], NULL,clientHandle, &a2[i]);
-        //rc = pthread_create(&a1[i], NULL,clientHandle,&a2[i]);
+        rc = pthread_create(s->getV1()[i], NULL,clientHandle,v2[i]);
         if (rc) {
             cout << "bad!!!!";
         }
         i++;
-        //ThreadArgs *newArgs = new(*args) ThreadArgs;
-        //v2.push_back(*newArgs);
-        //close(clientSocket);
-        //sleep(10);
     }
-    delete args;
+    //v1.clear();
+    v2.clear();
 }
 
 void Server::stop() {
 	cout << "close server socket" << endl;
-    vector<Game> * g = this->getGames();
-    for (vector<Game>::iterator it = g->begin(); it != g->end(); it++){
-        if(it->getIsFinish()){
-            g->erase(it);
-        }
+   vector<Game> * g = this->getGames();
+   for (vector<Game>::iterator it = g->begin(); it != g->end(); it++){
         if(it->getIsWait()) {
             close(it->getFirstClient());
-        } else{
+        } else {
             close(it->getFirstClient());
             close(it->getSecondClient());
         }
     }
+  this->getGames()->clear();
+  this->getV1().clear();
 	close(serverSocket);
 }
 
@@ -154,20 +143,14 @@ void Server::start() {
 
 }
 
-void Server::deleteName(string& name) {
-	vector <string>::iterator it;
-	for(it = gamesName.begin(); it != gamesName.end(); it++) {
-		if (*it == name){
-			gamesName.erase(it);
-			break;
-		}
-	}
-}
-
 int Server::getServerSocket() const {
 	return serverSocket;
 }
 
 vector<Game> *Server::getGames() {
 	return &this->games;
+}
+
+vector<pthread_t*>& Server::getV1()  {
+	return v1;
 }

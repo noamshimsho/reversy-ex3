@@ -5,6 +5,7 @@ import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
+import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
 
 
@@ -12,6 +13,8 @@ public class ReversiBoard extends GridPane {
 	@FXML
 	public int[][] board;
 	private Player player;
+	private static final int FIRST = 1;
+	private static final int SECOND = 2;
 	
 	public ReversiBoard(int [][] board) {
 		this.board = board;
@@ -69,7 +72,20 @@ public class ReversiBoard extends GridPane {
 				this.add(rect, j, i);
 			}
 		}
+		for (int i = 0; i < board.length; i++){
+			for (int j = 0; j < board[i].length; j++){
+				if (board[i][j] == FIRST) {
+					Ellipse e = new Ellipse(cellWidth/2,cellHeight/2);
+					e.setFill(Color.BLACK);
+					this.add(e, j, i);
+				} else if (board[i][j] == SECOND) {
+					Ellipse e = new Ellipse(cellWidth/2,cellHeight/2);
+					e.setFill(Color.WHITE);
+					this.add(e, j, i);
+			}
+		 }
+		}
 		player.draw(cellWidth, cellHeight);
 	}
-
+	
 }

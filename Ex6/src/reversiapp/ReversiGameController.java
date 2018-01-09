@@ -10,8 +10,8 @@ import javafx.scene.layout.HBox;
 public class ReversiGameController implements Initializable {
 	@FXML
 	private HBox root;
-	private static final int FIRST = 0;
-	private static final int SECOND = 1;
+	private static final int FIRST = 1;
+	private static final int SECOND = 2;
 	private int [][]board;
 
 	@Override

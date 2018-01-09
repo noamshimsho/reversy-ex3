@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Rectangle;
 
+
 public class ReversiBoard extends GridPane {
 	@FXML
 	public int[][] board;
@@ -19,9 +20,15 @@ public class ReversiBoard extends GridPane {
 		fxmlLoader.setController(this);
 		try {
 			fxmlLoader.load();
-			System.out.println("here!!!!!!!!!!!!!!!!!!!!" );
-			this.setOnKeyPressed(event -> {
-				switch (event.getCode()) {
+			System.out.println("q!!!!!!!!!!!!!!!!!!!!" );
+			this.setOnMouseClicked (event -> {
+				System.out.println("here!!!!!!!!!!!!!!!!!!!!" );
+				event.getX();
+				
+				System.out.println(event.getX() +"!!!!!!" + event.getY());
+				System.out.println(event.getScreenY() +"@@@@@" + event.getScreenY());
+				System.out.println(event.getSceneX() +"#####" + event.getSceneY());
+				/*switch (event.getCode()) {
 				case DOWN:
 					System.out.println("downnnnn");
 					break;
@@ -34,13 +41,13 @@ public class ReversiBoard extends GridPane {
 				case RIGHT:
 					System.out.println("RIGHTTTTTT");
 					break;
-				}
+				}*/
 				event.consume();
 			});
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
-		player = new Player(this,3,4);
+		player = new Player(this,7,7);
 		
 	}
 	
@@ -51,14 +58,7 @@ public class ReversiBoard extends GridPane {
 		
 		int cellHeight = height / board.length;
 		int cellWidth = width / board[0].length;
-		//System.out.println(cellHeight + ","  );
-		//System.out.println(height + "," );
-		//System.out.println(board.length + "," );
-		//System.out.println(cellWidth + "," );
-		//System.out.println(width + "," );
-		//System.out.println(board[0].length + "," );
-		
-		
+		System.out.println(cellHeight +"%%%%%" + cellWidth);
 		
 		for (int i = 0; i < board.length; i++){
 			for (int j = 0; j < board[i].length; j++){

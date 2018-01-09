@@ -16,7 +16,6 @@ public class Player {
 		iv = new ImageView(getClass().getResource("tag.png").toExternalForm());
 	}
   public void draw(int cellWidth, int cellHeight) {
-	  grid.add(iv, col, row);
 	  iv.setFitWidth(cellWidth);
 	  iv.setFitHeight(cellHeight);
 	  grid.getChildren().remove(iv);

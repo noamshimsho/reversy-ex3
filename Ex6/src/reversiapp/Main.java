@@ -1,5 +1,7 @@
 package reversiapp;
 	
+import java.util.concurrent.TimeUnit;
+
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
@@ -18,6 +20,24 @@ public class Main extends Application {
 			primaryStage.setTitle("REVERSI");
 			primaryStage.setScene(scene);
 			primaryStage.show();
+			
+			
+			/*try {
+				TimeUnit.SECONDS.sleep(60);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			*/
+		//	ReversiBoard b = (ReversiBoard)root.getChildren().get(0);
+			
+			
+		//	GameFlow game = new GameFlow(b.board);
+		//	Player p1 = new HumanPlayer('X');
+		//	Player p2 = new HumanPlayer('O');
+		//	game.play(p1, p2);
+		//	System.out.println("im herererererererererererere");
+			
+			
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

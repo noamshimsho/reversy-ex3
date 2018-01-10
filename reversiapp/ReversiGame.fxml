@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+	
+<HBox xmlns:fx="http://javafx.com/fxml/1" 
+fx:controller="reversiapp.ReversiGameController" fx:id="root" spacing="10">
+	<VBox spacing ="10">
+		<Label fx:id = "label" />
+		<Label fx:id = "scoreFirst" />
+		<Label fx:id = "scoreSecond" />
+		<Label fx:id = "endGame" />
+	</VBox>
+</HBox>

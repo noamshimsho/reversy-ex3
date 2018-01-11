@@ -73,11 +73,36 @@ public class ReversiBoard extends GridPane {
 							 	 if(fullBoard == (this.board.getRow()*this.board.getColumn())){
 							 		 System.out.println("full board!!!!!!!!!!!!!!!!!");
 									this.board.endGame(this.endGame, this.first, this.second);
+									this.draw();
+									return;
 								 }
-							 	String text =  this.second + "'s turn";
-								this.label.setText(text);
-								this.setTurn('O');
-								 this.draw();
+							 	if(!logic.calculateMoves('O').isEmpty()){
+								 	String text =  this.second + "'s turn";
+									this.label.setText(text);
+									this.setTurn('O');
+							 	} else{
+									counter++;
+									if(counter==2){
+										System.out.println("counter!!!!!!!!!!!!!!!!!");
+										this.board.endGame(this.endGame, this.first, this.second);
+										this.draw();
+										return;
+									}
+									if(!logic.calculateMoves('X').isEmpty()){
+										String text =  this.first + "'s turn";
+										this.label.setText(text);
+										this.setTurn('X');
+									} else{
+										counter++;
+										if(counter==2){
+											System.out.println("counter!!!!!!!!!!!!!!!!!");
+											this.board.endGame(this.endGame, this.first, this.second);
+											this.draw();
+											return;
+										}
+									}
+								}
+							 	this.draw();
 							}
 						}
 						
@@ -86,12 +111,36 @@ public class ReversiBoard extends GridPane {
 						 if(counter==2){
 							 System.out.println("counter!!!!!!!!!!!!!!!!!");
 							this.board.endGame(this.endGame, this.first, this.second);
+							this.draw();
+							return;
 						}
-						String text =  this.second + "'s turn";
-						this.label.setText(text);
-						this.setTurn('O');
+						if(!logic.calculateMoves('O').isEmpty()){
+							String text =  this.second + "'s turn";
+							this.label.setText(text);
+							this.setTurn('O');
+						} else{
+							counter++;
+							if(counter==2){
+								System.out.println("counter!!!!!!!!!!!!!!!!!");
+								this.board.endGame(this.endGame, this.first, this.second);
+								this.draw();
+								return;
+							}
+							if(!logic.calculateMoves('X').isEmpty()){
+								String text =  this.first + "'s turn";
+								this.label.setText(text);
+								this.setTurn('X');
+							} else{
+								counter++;
+								if(counter==2){
+									System.out.println("counter!!!!!!!!!!!!!!!!!");
+									this.board.endGame(this.endGame, this.first, this.second);
+									this.draw();
+									return;
+								}
+							}
+						}
 					}
-					
 				} else {
 					LinkedList<Position> moves = logic.calculateMoves('O');
 					if(!moves.isEmpty()){
@@ -111,10 +160,35 @@ public class ReversiBoard extends GridPane {
 								if(fullBoard == (this.board.getRow()*this.board.getColumn())){
 									System.out.println("full board!!!!!!!!!!!!!!!!!");
 									this.board.endGame(this.endGame, this.first, this.second);
+									this.draw();
+									return;
 								}
-								String text =  this.first + "'s turn";
-								this.label.setText(text);
-								this.setTurn('X');
+								if(!logic.calculateMoves('X').isEmpty()){
+									String text =  this.first + "'s turn";
+									this.label.setText(text);
+									this.setTurn('X');
+								} else{
+									counter++;
+									if(counter==2){
+										System.out.println("counter!!!!!!!!!!!!!!!!!");
+										this.board.endGame(this.endGame, this.first, this.second);
+										this.draw();
+										return;
+									}
+									if(!logic.calculateMoves('O').isEmpty()){
+										String text =  this.second + "'s turn";
+										this.label.setText(text);
+										this.setTurn('O');
+									} else{
+										counter++;
+										if(counter==2){
+											System.out.println("counter!!!!!!!!!!!!!!!!!");
+											this.board.endGame(this.endGame, this.first, this.second);
+											this.draw();
+											return;
+										}
+									}
+								}
 								this.draw();
 							}
 						}
@@ -124,10 +198,35 @@ public class ReversiBoard extends GridPane {
 						if(counter==2){
 							System.out.println("counter!!!!!!!!!!!!!!!!!");
 							this.board.endGame(this.endGame, this.first, this.second);
+							this.draw();
+							return;
 						}
-						String text =  this.first + "'s turn";
-						this.label.setText(text);
-						this.setTurn('X');
+						if(!logic.calculateMoves('X').isEmpty()){
+							String text =  this.first + "'s turn";
+							this.label.setText(text);
+							this.setTurn('X');
+						} else{
+							counter++;
+							if(counter==2){
+								System.out.println("counter!!!!!!!!!!!!!!!!!");
+								this.board.endGame(this.endGame, this.first, this.second);
+								this.draw();
+								return;
+							}
+							if(!logic.calculateMoves('O').isEmpty()){
+								String text =  this.second + "'s turn";
+								this.label.setText(text);
+								this.setTurn('O');
+							} else{
+								counter++;
+								if(counter==2){
+									System.out.println("counter!!!!!!!!!!!!!!!!!");
+									this.board.endGame(this.endGame, this.first, this.second);
+									this.draw();
+									return;
+								}
+							}
+						}
 					}
 					
 				}

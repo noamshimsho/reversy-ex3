@@ -13,11 +13,18 @@ import java.util.concurrent.TimeUnit;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 
 public class ReversiGameController implements Initializable {
 	@FXML
 	private HBox root;
+	@FXML
+	private Label label;
+	@FXML
+	private Label scoreFirst;
+	@FXML
+	private Label scoreSecond;
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -43,20 +50,23 @@ public class ReversiGameController implements Initializable {
 		String line,first = "",second = "";
 		int size = 0;
 		try {
-			line = reader.readLine();
-			size = Integer.parseInt(line);
 			first = reader.readLine();
 			second = reader.readLine();
+			line = reader.readLine();
+			size = Integer.parseInt(line);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Board b = new Board(size);
-		ReversiBoard rb = new ReversiBoard(b, first, second);
+		ReversiBoard rb = new ReversiBoard(b, first, second, this.label, this.scoreFirst, this.scoreSecond);
 		rb.setPrefHeight(400);
 		rb.setPrefWidth(400);
 		root.getChildren().add(0,rb);
 		rb.draw();
-		
+		label.setText(first  + "'s turn");
+		scoreFirst.setText(first + " score: 2");
+		scoreSecond.setText(second + " score: 2");
+
 		
 		root.widthProperty().addListener((observable, oldValue, newValue) -> {
 			double boardNewWidth = newValue.doubleValue() - 120;
@@ -64,7 +74,7 @@ public class ReversiGameController implements Initializable {
 			rb.draw();		
 		});
 		root.heightProperty().addListener((observable, oldValue, newValue) -> {
-			//double boardNewWidth = newValue.doubleValue() - 120;
+			double boardNewWidth = newValue.doubleValue() - 120;
 			rb.setPrefHeight(newValue.doubleValue());
 			rb.draw();		
 		});

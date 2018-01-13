@@ -6,9 +6,11 @@ import java.util.LinkedList;
 import javafx.scene.paint.Color;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.Stage;
 
 
 public class ReversiBoard extends GridPane {
@@ -18,20 +20,26 @@ public class ReversiBoard extends GridPane {
 	private String second;
 	private char turn;
 	private GameLogic logic;
-
+	private Label label;
+	private Label scoreFirst;
+	private Label scoreSecond;
 	
-	public ReversiBoard(Board board, String first, String second) {
+	
+	public ReversiBoard(Board board, String first, String second, Label label, Label scoreFirst, Label scoreSecond) {
 		this.board = board;
 		this.first = first;
 		this.second = second;
 		this.turn = 'X';
 		this.logic = new GameLogic(this.getBoard());
+		this.label = label;
+		this.scoreFirst = scoreFirst;
+		this.scoreSecond = scoreSecond;
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReversiBoard.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
+		
 		try {
 			fxmlLoader.load();
-			
 			this.setOnMouseClicked (event -> {
 				System.out.println("here!!!!!!!!!!!!!!!!!!!!" );
 
@@ -54,12 +62,18 @@ public class ReversiBoard extends GridPane {
 					
 					for (int i = 0; i < moves.size(); i++) {  // check that this position is equal to one of his options
 						if (row == moves.get(i).getRow() && column == moves.get(i).getColumn()) {
-							//System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1");
-							 //this.board.getBoard()[row - 1][column - 1] = this.getTurn();
+							 
+
 							 logic.updateBoard(new Position(row,column), 'X');
 							 this.draw();
+							 String firstscore = Integer.toString(this.board.score('X'));
+							 String secondtscore = Integer.toString(this.board.score('O'));
+							 scoreFirst.setText(first + " score:" + firstscore);
+							 scoreSecond.setText(second + " score:" + secondtscore);
 							 if (this.hasMove('O')){
-								 this.setTurn('O'); 
+								 this.setTurn('O');
+								 String text = this.second  + "'s turn";
+								 label.setText(text);
 							 }
 						}
 					}
@@ -75,8 +89,14 @@ public class ReversiBoard extends GridPane {
 							logic.updateBoard(new Position(row,column), 'O');
 							//this.board.getBoard()[row - 1][column - 1] = this.getTurn();
 							this.draw();
+							 String firstscore = Integer.toString(this.board.score('X'));
+							 String secondtscore = Integer.toString(this.board.score('O'));
+							 scoreFirst.setText(first + " score:" + firstscore);
+							 scoreSecond.setText(second + " score:" + secondtscore);
 							if (this.hasMove('X')){
 								this.setTurn('X');
+								String text = this.first  + "'s turn";
+								label.setText(text);
 							}
 						}
 					}
@@ -86,13 +106,47 @@ public class ReversiBoard extends GridPane {
 		} catch (IOException exception) {
 			throw new RuntimeException(exception);
 		}
-		//playerTest = new PlayerTest(this,7,7);
 	}
 	public boolean hasMove(char player) {
 		LinkedList<Position> moves = logic.calculateMoves(player);
 		if(!moves.isEmpty()){
 			return true;
 		} else {
+			if(player == 'X') {
+				LinkedList<Position> moves1 = logic.calculateMoves('O');
+				if(moves1.isEmpty()) {
+					System.out.println("finish game no moves.....");
+					int x = this.board.score('X');
+					int y = this.board.score('O');
+					if (x > y){
+						FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),1,this.first,this.second);
+						finish.display();
+					} else if (x < y) {
+						FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),2,this.first,this.second);
+						finish.display();
+					} else {
+						FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),3,this.first,this.second);
+						finish.display();
+					}
+				}
+			} else {
+				LinkedList<Position> moves1 = logic.calculateMoves('X');
+				if (moves1.isEmpty()){
+					System.out.println("finish game no moves.....");
+					int x = this.board.score('X');
+					int y = this.board.score('O');
+					if (x > y){
+						FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),1,this.first,this.second);
+						finish.display();
+					} else if (x < y) {
+						FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),2,this.first,this.second);
+						finish.display();
+					} else {
+						FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),3,this.first,this.second);
+						finish.display();
+					}
+				}
+			}
 			return false;
 		}
 	}
@@ -150,7 +204,5 @@ public class ReversiBoard extends GridPane {
 			}
 		 }
 		}
-		//playerTest.draw(cellWidth, cellHeight);
 	}
-	
 }

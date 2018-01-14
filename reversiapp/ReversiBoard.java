@@ -10,225 +10,90 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.shape.Ellipse;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 
-
+/**
+ * this class represent ReversiBoard
+ * @author sarit zevin 313242588 and noam shimshoviz 203565429
+ *
+ */
 public class ReversiBoard extends GridPane {
 	@FXML
 	private Board board;
-	private String first;
-	private String second;
-	private char turn;
+	private Player turn;
+	private Player otherTurn;
+	private Player p1;
+	private Player p2;
 	private GameLogic logic;
 	private Label label;
 	private Label scoreFirst;
 	private Label scoreSecond;
-	private Label endGame;
-	public int counter=0;
-	public int fullBoard=4;
 	
-	public ReversiBoard(Board board, String first, String second, Label label, Label scoreFirst, Label scoreSecond, Label endGame) {
+	/**
+	 * construct ReversiBoard
+	 * @param board the board of the reversi game
+	 * @param first the name of the first player
+	 * @param second the name of the second player
+	 * @param label the label for the turn announcement
+	 * @param scoreFirst the label to announce the score of the first player
+	 * @param scoreSecond the label to announce the score of the second player
+	 */
+	public ReversiBoard(Board board, Player p1, Player p2, Label label, Label scoreFirst, Label scoreSecond) {
+		this.board = board;
+		this.p1 = p1;
+		this.p2 = p2;
+		this.turn = p1;
+		this.otherTurn = p2;
+		this.logic = new GameLogic(this.getBoard());
 		this.label = label;
 		this.scoreFirst = scoreFirst;
 		this.scoreSecond = scoreSecond;
-		this.endGame = endGame;
-		this.board = board;
-		this.first = first;
-		this.second = second;
-		this.turn = 'X';
-		this.logic = new GameLogic(this.getBoard());
+	}
+	/**
+	 * this method run the game in every click of the mouse
+	 * the current player make his turn
+	 */
+	public void play(){
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("ReversiBoard.fxml"));
 		fxmlLoader.setRoot(this);
 		fxmlLoader.setController(this);
 		try {
 			fxmlLoader.load();
 			this.setOnMouseClicked (event -> {
+				//calculate the click into a position
 				int height = (int)this.getPrefHeight();
 				int width = (int)this.getPrefWidth();
-				int cellHeight = height / this.board.getRow();
-				int cellWidth = width / this.board.getColumn();
+				int cellHeight = height / this.getBoard().getRow();
+				int cellWidth = width / this.getBoard().getColumn();
 				int column = (int)event.getX()/cellWidth + 1;
 				int row = (int)event.getY()/cellHeight + 1;
 				System.out.println(row +" ++++++ " + column);
-				System.out.println("counter: " + counter);
-				System.out.println("fullBoard: " + fullBoard);
-
-				if (this.getTurn() == 'X'){
-					LinkedList<Position> moves = logic.calculateMoves('X');
-					if(!moves.isEmpty()){
-						System.out.print("player: X "  + " your possible moves are: ");
-						for (int i = 0; i < moves.size(); i++) {
-							System.out.print("(" +  moves.get(i).getRow() + ", " + moves.get(i).getColumn() + ") ");
-						}
-						for (int i = 0; i < moves.size(); i++) {  // check that this position is equal to one of his options
-							if (row == moves.get(i).getRow() && column == moves.get(i).getColumn()) {
-								 logic.updateBoard(new Position(row,column), 'X');
-								 String xscore = Integer.toString(this.board.score('X'));
-								 String oscore = Integer.toString(this.board.score('O'));
-								 this.scoreFirst.setText(this.first + "'s score: " + xscore);
-								 this.scoreSecond.setText(this.second + "'s score: " + oscore);
-								 counter=0;
-								 fullBoard++;
-							 	 if(fullBoard == (this.board.getRow()*this.board.getColumn())){
-							 		 System.out.println("full board!!!!!!!!!!!!!!!!!");
-									this.board.endGame(this.endGame, this.first, this.second);
-									this.draw();
-									return;
-								 }
-							 	if(!logic.calculateMoves('O').isEmpty()){
-								 	String text =  this.second + "'s turn";
-									this.label.setText(text);
-									this.setTurn('O');
-							 	} else{
-									counter++;
-									if(counter==2){
-										System.out.println("counter!!!!!!!!!!!!!!!!!");
-										this.board.endGame(this.endGame, this.first, this.second);
-										this.draw();
-										return;
-									}
-									if(!logic.calculateMoves('X').isEmpty()){
-										String text =  this.first + "'s turn";
-										this.label.setText(text);
-										this.setTurn('X');
-									} else{
-										counter++;
-										if(counter==2){
-											System.out.println("counter!!!!!!!!!!!!!!!!!");
-											this.board.endGame(this.endGame, this.first, this.second);
-											this.draw();
-											return;
-										}
-									}
-								}
-							 	this.draw();
-							}
-						}
-						
-					} else{
-						 counter++;
-						 if(counter==2){
-							 System.out.println("counter!!!!!!!!!!!!!!!!!");
-							this.board.endGame(this.endGame, this.first, this.second);
-							this.draw();
-							return;
-						}
-						if(!logic.calculateMoves('O').isEmpty()){
-							String text =  this.second + "'s turn";
-							this.label.setText(text);
-							this.setTurn('O');
-						} else{
-							counter++;
-							if(counter==2){
-								System.out.println("counter!!!!!!!!!!!!!!!!!");
-								this.board.endGame(this.endGame, this.first, this.second);
-								this.draw();
-								return;
-							}
-							if(!logic.calculateMoves('X').isEmpty()){
-								String text =  this.first + "'s turn";
-								this.label.setText(text);
-								this.setTurn('X');
-							} else{
-								counter++;
-								if(counter==2){
-									System.out.println("counter!!!!!!!!!!!!!!!!!");
-									this.board.endGame(this.endGame, this.first, this.second);
-									this.draw();
-									return;
-								}
-							}
-						}
+				//check if the current player has possible moves
+				LinkedList<Position> moves = this.logic.calculateMoves(this.getTurn().getSymbol());
+				System.out.print("player: " + this.getTurn()  + " your possible moves are: ");
+				for (int i = 0; i < moves.size(); i++) {
+					System.out.print("(" +  moves.get(i).getRow() + ", " + moves.get(i).getColumn() + ") ");
+				}
+				for (int i = 0; i < moves.size(); i++) {  // check that this position is equal to one of his options
+					if (row == moves.get(i).getRow() && column == moves.get(i).getColumn()) {				 
+						this.logic.updateBoard(new Position(row,column), this.getTurn().getSymbol());
+						this.draw();
+						//calculate the score for both of the players and print them
+						String firstscore = Integer.toString(this.getBoard().score(this.p1.getSymbol()));
+						String secondtscore = Integer.toString(this.getBoard().score(this.p2.getSymbol()));
+						scoreFirst.setText(this.p1.getColor() + " score:" + firstscore);
+						scoreSecond.setText(this.p2.getColor() + " score:" + secondtscore);
+						if (this.hasMove(this.getOtherTurn(), this.getTurn())){
+							//switch the turns
+							Player temp = this.getTurn(); 
+							 this.setTurn(this.getOtherTurn());
+							 this.setOtherTurn(temp);
+							 //write the next turn
+							 String text;
+							 text = this.getTurn().getColor()  + "'s turn";
+							 this.label.setText(text);
+						 }
 					}
-				} else {
-					LinkedList<Position> moves = logic.calculateMoves('O');
-					if(!moves.isEmpty()){
-						System.out.print("player: O "  + " your possible moves are: ");
-						for (int i = 0; i < moves.size(); i++) {
-							System.out.print("(" +  moves.get(i).getRow() + ", " + moves.get(i).getColumn() + ") ");
-						}
-						for (int i = 0; i < moves.size(); i++) {  // check that this position is equal to one of his options
-							if (row == moves.get(i).getRow() && column == moves.get(i).getColumn()) {
-								logic.updateBoard(new Position(row,column), 'O');
-								String xscore = Integer.toString(this.board.score('X'));
-								String oscore = Integer.toString(this.board.score('O'));
-								this.scoreFirst.setText(this.first + "'s score: " + xscore);
-								this.scoreSecond.setText(this.second + "'s score: " + oscore);
-								counter=0;
-								fullBoard++;
-								if(fullBoard == (this.board.getRow()*this.board.getColumn())){
-									System.out.println("full board!!!!!!!!!!!!!!!!!");
-									this.board.endGame(this.endGame, this.first, this.second);
-									this.draw();
-									return;
-								}
-								if(!logic.calculateMoves('X').isEmpty()){
-									String text =  this.first + "'s turn";
-									this.label.setText(text);
-									this.setTurn('X');
-								} else{
-									counter++;
-									if(counter==2){
-										System.out.println("counter!!!!!!!!!!!!!!!!!");
-										this.board.endGame(this.endGame, this.first, this.second);
-										this.draw();
-										return;
-									}
-									if(!logic.calculateMoves('O').isEmpty()){
-										String text =  this.second + "'s turn";
-										this.label.setText(text);
-										this.setTurn('O');
-									} else{
-										counter++;
-										if(counter==2){
-											System.out.println("counter!!!!!!!!!!!!!!!!!");
-											this.board.endGame(this.endGame, this.first, this.second);
-											this.draw();
-											return;
-										}
-									}
-								}
-								this.draw();
-							}
-						}
-						
-					} else{
-						counter++;
-						if(counter==2){
-							System.out.println("counter!!!!!!!!!!!!!!!!!");
-							this.board.endGame(this.endGame, this.first, this.second);
-							this.draw();
-							return;
-						}
-						if(!logic.calculateMoves('X').isEmpty()){
-							String text =  this.first + "'s turn";
-							this.label.setText(text);
-							this.setTurn('X');
-						} else{
-							counter++;
-							if(counter==2){
-								System.out.println("counter!!!!!!!!!!!!!!!!!");
-								this.board.endGame(this.endGame, this.first, this.second);
-								this.draw();
-								return;
-							}
-							if(!logic.calculateMoves('O').isEmpty()){
-								String text =  this.second + "'s turn";
-								this.label.setText(text);
-								this.setTurn('O');
-							} else{
-								counter++;
-								if(counter==2){
-									System.out.println("counter!!!!!!!!!!!!!!!!!");
-									this.board.endGame(this.endGame, this.first, this.second);
-									this.draw();
-									return;
-								}
-							}
-						}
-					}
-					
 				}
 				event.consume();
 			});
@@ -237,17 +102,65 @@ public class ReversiBoard extends GridPane {
 		}
 	}
 	/**
+	 * check if there is possible moves for the player
+	 * of there isn't it check if the other player has any possible move
+	 * if he also hasn't it means the game is over
+	 * @param player the cuurent player to check if has move
+	 * @param other the other player to check if has move in case the current player has no move
+	 * @return true if the current player has possible move, false otherwise
+	 */
+	public boolean hasMove(Player player, Player other) {
+		if(!(this.logic.calculateMoves(player.getSymbol())).isEmpty()){
+			return true;
+		} else {
+			if(this.logic.calculateMoves(other.getSymbol()).isEmpty()) {
+				System.out.println("finish game no moves.....");
+				this.endGame();
+			}
+			return false;
+		}
+	}
+	/**
+	 * this method define which player won the game
+	 * and create FinishGame according to the winner
+	 */
+	public void endGame(){
+		int x = this.getBoard().score(this.getTurn().getSymbol());
+		int y = this.getBoard().score(this.getOtherTurn().getSymbol());
+		if (x > y){
+			FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),1,this.getTurn().getColor());
+			finish.display();
+		} else if (x < y) {
+			FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),2,this.getOtherTurn().getColor());
+			finish.display();
+		} else {
+			FinishGame finish = new FinishGame((Stage)this.getScene().getWindow(),3, "");
+			finish.display();
+		}
+	}
+	/**
 	 * @return the turn
 	 */
-	public char getTurn() {
+	public Player getTurn() {
 		return turn;
 	}
-
+	/**
+	 * @return the other turn
+	 */
+	public Player getOtherTurn() {
+		return otherTurn;
+	}
 	/**
 	 * @param turn the turn to set
 	 */
-	public void setTurn(char turn) {
+	public void setTurn(Player turn) {
 		this.turn = turn;
+	}
+	/**
+	 * @param otherTurn the other turn to set
+	 */
+	public void setOtherTurn(Player otherTurn) {
+		this.otherTurn = otherTurn;
 	}
 
 	/**
@@ -257,39 +170,38 @@ public class ReversiBoard extends GridPane {
 		return board;
 	}
 
-
+	/**
+	 * this method draw the board
+	 */
 	public void draw() {
 		this.getChildren().clear();
 		int height = (int)this.getPrefHeight();
 		int width = (int)this.getPrefWidth();
-		
-		int cellHeight = height / this.board.getRow();
-		int cellWidth = width / this.board.getColumn();
-		System.out.println(cellHeight +"%%%%%" + cellWidth);
-		
-		for (int i = 0; i < this.board.getRow(); i++){
-			for (int j = 0; j < this.board.getColumn(); j++){
+		int cellHeight = height / this.getBoard().getRow();
+		int cellWidth = width / this.getBoard().getColumn();
+		//draw the cells of the board
+		for (int i = 0; i < this.getBoard().getRow(); i++){
+			for (int j = 0; j < this.getBoard().getColumn(); j++){
 				Rectangle rect = new Rectangle(cellWidth,cellHeight);
-				rect.setFill(Color.GOLD);
+				rect.setFill(Color.GREEN);
 				rect.setStroke(Color.BLACK);
 			
 				this.add(rect, j, i);
 			}
 		}
-		for (int i = 0; i < this.board.getRow(); i++){
-			for (int j = 0; j < this.board.getColumn(); j++){
-				if (this.board.getBoard()[i][j] == 'X') {
+		//draw ellipse if there is 'x' or 'o' on the board
+		for (int i = 0; i < this.getBoard().getRow(); i++){
+			for (int j = 0; j < this.getBoard().getColumn(); j++){
+				if (this.getBoard().getBoard()[i][j] == this.getTurn().getSymbol()) {
 					Ellipse e = new Ellipse(cellWidth/2,cellHeight/2);
-					
-					e.setFill(Color.web(first));
+					e.setFill(Color.web(this.getTurn().getColor()));
 					this.add(e, j, i);
-				} else if (this.board.getBoard()[i][j] == 'O') {
+				} else if (this.getBoard().getBoard()[i][j] == this.getOtherTurn().getSymbol()) {
 					Ellipse e = new Ellipse(cellWidth/2,cellHeight/2);
-					e.setFill(Color.web(second));
+					e.setFill(Color.web(this.getOtherTurn().getColor()));
 					this.add(e, j, i);
 				}
 			}
 		}
-		//playerTest.draw(cellWidth, cellHeight);
 	}
 }

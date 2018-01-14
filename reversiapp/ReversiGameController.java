@@ -15,8 +15,11 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Font;
-
+/**
+ * this class represent ReversiGameController
+ * @author Noam shimshoviz 203565429 Sarit Zevin 313242588
+ *
+ */
 public class ReversiGameController implements Initializable {
 	@FXML
 	private HBox root;
@@ -26,13 +29,13 @@ public class ReversiGameController implements Initializable {
 	private Label scoreFirst;
 	@FXML
 	private Label scoreSecond;
-	@FXML
-	private Label endGame;
-
+	/**
+	 * initialize the game according to the read from the file
+	 */
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		File f1 = new File("settings.txt");
-		
+    
 		// Open a file reader obfather.getY()ect
 		FileInputStream fis = null;
 		try {
@@ -52,24 +55,27 @@ public class ReversiGameController implements Initializable {
 		String line,first = "",second = "";
 		int size = 0;
 		try {
-			line = reader.readLine();
-			size = Integer.parseInt(line);
 			first = reader.readLine();
 			second = reader.readLine();
+			line = reader.readLine();
+			size = Integer.parseInt(line);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		Board b = new Board(size);
-		ReversiBoard rb = new ReversiBoard(b, first, second, this.label, this.scoreFirst, this.scoreSecond, this.endGame);
+		Player p1 = new Player(discSymbol.X, first);
+		Player p2 = new Player(discSymbol.O, second);
+		ReversiBoard rb = new ReversiBoard(b, p1, p2, this.label, this.scoreFirst, this.scoreSecond);
 		rb.setPrefHeight(400);
 		rb.setPrefWidth(400);
 		root.getChildren().add(0,rb);
 		rb.draw();
-		this.label.setFont(Font.font ("Verdana", 15));
-		String text = first+ "'s turn";
-		this.label.setText(text);
-		this.scoreFirst.setText(first + "'s score: " + 2);
-		this.scoreSecond.setText(second + "'s score: " + 2);
+		//initialize the text for the first turn
+		label.setText(first  + "'s turn");
+		scoreFirst.setText(first + " score: 2");
+		scoreSecond.setText(second + " score: 2");
+		rb.play();
+
 		
 		root.widthProperty().addListener((observable, oldValue, newValue) -> {
 			double boardNewWidth = newValue.doubleValue() - 120;
@@ -77,10 +83,10 @@ public class ReversiGameController implements Initializable {
 			rb.draw();		
 		});
 		root.heightProperty().addListener((observable, oldValue, newValue) -> {
-			//double boardNewWidth = newValue.doubleValue() - 120;
+			double boardNewWidth = newValue.doubleValue() - 120;
 			rb.setPrefHeight(newValue.doubleValue());
 			rb.draw();		
 		});
 		
-	}	
+	}
 }

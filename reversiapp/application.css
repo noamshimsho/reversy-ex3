@@ -1,1 +1,25 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+
+.button {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-background-color: linear-gradient(#61a2b1,#2A5058);
+}
+#set{
+	
+}
+#menu{
+	-fx-background-image: url("menu5.jpg");	
+}
+#settings{
+	-fx-background-image: url("setting.jpg");	
+}
+#finish{
+	-fx-background-image: url("firework.jpeg");
+}
+#labelFinish {
+	-fx-font-size: 24;
+	-fx-font-weight: bold;
+	-fx-text-fill: red;
+}

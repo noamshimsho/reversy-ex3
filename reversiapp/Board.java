@@ -1,34 +1,36 @@
 package reversiapp;
-
-import java.util.concurrent.TimeUnit;
-
-import javafx.scene.control.Label;
-
-/*
- *      Author: Noam shimshoviz 203565429 and sarit zevin, ID: 313242588
+/**
+ * this class represent a board
+ * @author noam shimshoviz 203565429 and sarit zevin, ID: 313242588
+ *
  */
-
 public class Board {
 	private int row;
 	private int column;
-	private char[][] board;
-	public Board(int size){  // build the board as a array of pointers that each one of them point to another array
+	private discSymbol[][] board;
+	/**
+	 * construct a board from a given integer
+	 * @param size the size of the rows and the columns of the board
+	 */
+	public Board(int size){
 		this.row = size;
 		this.column = size;
-		this.board = new char[this.row][this.column];
+		this.board = new discSymbol[this.row][this.column];
+		//initialize the board with space
 		for (int i = 0; i < row; i++){
 			for (int j = 0; j < column; j++){
-				board[i][j] = ' ';
+				board[i][j] = discSymbol.S;
 			}
 		}
 		// build the opening board
-		this.board [(this.row / 2) -1][(this.row / 2) -1] = 'O';
-		this.board [(this.row / 2)][(this.row / 2)] = 'O';
-		this.board [(this.row / 2) -1][(this.row / 2)] = 'X';
-		this.board [(this.row / 2)][(this.row / 2) -1] = 'X';
-
-
+		this.board [(this.row / 2) -1][(this.row / 2) -1] = discSymbol.O;
+		this.board [(this.row / 2)][(this.row / 2)] = discSymbol.O;
+		this.board [(this.row / 2) -1][(this.row / 2)] = discSymbol.X;
+		this.board [(this.row / 2)][(this.row / 2) -1] = discSymbol.X;
 	}
+	/**
+	 * print the console board (not relevant for ex 6)
+	 */
 	public void print() {
 		int i, j;
 		for (i=0; i<row+1;i++) {
@@ -46,7 +48,7 @@ public class Board {
 					}
 					//print the rest of the board
 				} else {
-					System.out.print((char)board[i-1][j-1] +  " |");
+					System.out.print((discSymbol)board[i-1][j-1] +  " |");
 				}
 			}
 			System.out.println("");
@@ -55,35 +57,52 @@ public class Board {
 			}
 			System.out.println("");
 		}
-
 	}
-
-	public void update(int row, int column, char player) {
+	/**
+	 * update the board according to a two given integers and given discSymbol
+	 * @param row the row of the position to update
+	 * @param column the column of the position to update
+	 * @param player the symbol to put on the board
+	 */
+	public void update(int row, int column, discSymbol player) {
 		this.board[row][column] = player;
 	}
-
+	/**
+	 * @return the number of columns in the board
+	 */
 	public int getColumn()  {
 		return this.column;
 	}
-
+	/**
+	 * @return the number of rows in the board
+	 */
 	public int getRow() {
 		return this.row;
 	}
-
-	public char[][] getBoard()  {
+	/**
+	 * @return the board
+	 */
+	public discSymbol[][] getBoard()  {
 		return this.board;
 	}
-
+	/**
+	 * copy construct the board
+	 * @param oldboard the board to copy from
+	 */
 	public Board(Board oldboard) {
-		char[][] old = oldboard.getBoard();
+		discSymbol[][] old = oldboard.getBoard();
 		for (int i = 0; i < this.getRow(); i++){
 			for (int j = 0; j < this.getColumn(); j++){
 				this.getBoard()[i][j] = old[i][j];
 			}
 		}
 	}
-
-	public int score(char player)  {
+	/**
+	 * compute the how many discs of a given discSymbol there are on the board
+	 * @param player the discSymbol of the discs
+	 * @return the number of the given discSymbol on the board
+	 */
+	public int score(discSymbol player)  {
 		int total = 0;
 		for (int i = 0; i < this.getRow(); i++) {
 			for (int j = 0; j < this.getColumn(); j++){
@@ -93,18 +112,5 @@ public class Board {
 			}
 		}
 		return total;
-	}
-	public void endGame(Label label, String first, String second)  {
-	    int x = this.score('X');
-	    int o = this.score('O');
-		if (x > o) {
-			label.setText("the game is over!!!\nthe winner is....\n"+ first+"!!! congratulations!!!");
-		}
-		else if (o > x) {
-			label.setText("the game is over!!!\nthe winner is....\n"+ second+"!!! congratulations!!!");
-		}
-		else {
-			label.setText("the game is over!!!\ngood game it is a draw!!!");
-		}
 	}
 }

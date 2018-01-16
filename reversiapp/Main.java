@@ -22,7 +22,7 @@ public class Main extends Application {
 			//create VBox
 			VBox root = (VBox)FXMLLoader.load(getClass().getResource("Menu.fxml"));
 			root.setId("menu");
-			//create Scene from the VBox
+			//create Scene 
 			Scene scene = new Scene(root,630,630);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setTitle("REVERSI");

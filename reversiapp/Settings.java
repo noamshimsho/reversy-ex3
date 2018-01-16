@@ -10,9 +10,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
-
 import com.sun.glass.ui.Window;
-
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -34,7 +32,7 @@ import javafx.stage.Stage;
  */
 public class Settings {
 	/**
-	 * default constructor
+	 *  constructor
 	 */
 	public Settings(){}
 	/**
@@ -45,13 +43,13 @@ public class Settings {
 		Stage window = new Stage();
 		window.initModality(Modality.APPLICATION_MODAL);
 		window.setTitle("REVERSI.SETTINGS");
-		
+		// set the layout
 		GridPane layout = new GridPane();
 		layout.setPadding(new Insets(10,10,10,10));
 		layout.setVgap(12);
 		layout.setHgap(12);		
 		layout.setId("set");
-		
+		//addinig labels
 		Label colorFirst = new Label("First player color:");
 		colorFirst.setTextFill(Color.WHITE);
 		GridPane.setConstraints(colorFirst, 0, 0);
@@ -61,7 +59,7 @@ public class Settings {
 		Label boardSize = new Label("Board size:");
 		boardSize.setTextFill(Color.WHITE);
 		GridPane.setConstraints(boardSize, 0, 2);
-		
+		// addinng choice box
 		ChoiceBox <String> firstPlayer = new ChoiceBox<>();
 		GridPane.setConstraints(firstPlayer, 1, 0);
 		ChoiceBox <String> secondPlayer = new ChoiceBox<>();

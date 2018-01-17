@@ -2,7 +2,7 @@
  * ThreadPool.cpp
  *
  *  Created on: 16 בינו׳ 2018
- *      Author: noam
+ *      Authors: noam shimshoviz, ID: 203565429 and sarit zevin, ID: 313242588
  */
 
 #include "ThreadPool.h"
@@ -27,7 +27,6 @@ void ThreadPool::executeTasks() {
 	while(!stopped) {
 		pthread_mutex_lock(&lock);
 		if (!tasksQueue.empty()) {
-			cout << "shalom\n";
 			Task* task = tasksQueue.front();
 			tasksQueue.pop();
 			pthread_mutex_unlock(&lock);

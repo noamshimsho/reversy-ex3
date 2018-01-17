@@ -16,7 +16,6 @@
 StartCommand::StartCommand(Server &server) :s(server) {}
 
 bool StartCommand::execute(vector<string> args) {
-	bool flag = true;
 	//the client who strat is the last argument in the vector
 	int clientsocket = atoi(args[args.size() - 1].c_str());
 	args.pop_back();
@@ -25,18 +24,15 @@ bool StartCommand::execute(vector<string> args) {
 	//checking if the asked name to start the game is valid (not exist already)
 	for (vector<Game>::iterator it = s.getGames()->begin(); it != s.getGames()->end(); it++){
 		//if the name isn't valid
-
 		if(name == it->getName() && it->getIsWait()){
 			//send to the client -1 which means wrong name
 			const char * answer  = "-1";
 			int l = strlen(answer);
 			write(clientsocket, &l, sizeof(l));
 			write(clientsocket, answer, l);
-			flag = false;
 			return true;
 		}
 	}
-	if (flag){
 	//if the name is valid create a game with that name
     Game g(name, clientsocket);
     s.getGames()->push_back(g);
@@ -45,9 +41,5 @@ bool StartCommand::execute(vector<string> args) {
     int l = strlen(answer);
     write(clientsocket, &l, sizeof(l));
     write(clientsocket, answer, l);
-    int status;
-	//close the thread
     return false;
-    //pthread_exit(&status);
-	}
 }

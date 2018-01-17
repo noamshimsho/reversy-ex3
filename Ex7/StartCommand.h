@@ -24,6 +24,8 @@ public:
 	/**
      * this method execute the strar command
      * @param args the arguments to start the games
+     * @return true of the name game is valid (not exist already)
+     * @return false otherwise
      */
 	bool execute(vector <string> args);
 private:
